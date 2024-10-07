@@ -32,9 +32,9 @@
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('home')}}">
-        <div class="sidebar-brand-icon ">
+        <div class="sidebar-brand-icon rotate-n-15">
           <!-- <i class="fas fa-laugh-wink"></i> -->
-          <img src="{{ asset('img/logo_nsia.png') }}" alt="Logo NSIA" style="width: 70px; height: 70px;">
+          <img src="{{ asset('img/logo_nsia.png') }}" alt="Logo NSIA" style="width: 60px; height: 60px;">
         </div>
         <div class="sidebar-brand-text mx-3">Rapport <sup>NSIA</sup></div>
       </a>
@@ -252,7 +252,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Rappart de tâche quotidienne NSIA vie assurance 2024</span>
+            <span>Copyright &copy; Rapport quotidien NSIA vie assurance 2024</span>
           </div>
         </div>
       </footer>
@@ -282,7 +282,7 @@
         <div class="modal-body">Sélectionnez « Déconnexion » ci-dessous si vous êtes prêt à mettre fin à votre session en cours.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-          <a class="btn btn-primary" href="login.html">Déconnexion</a>
+          <a class="btn btn-primary" href="{{route('auth.logout')}}">Déconnexion</a>
         </div>
       </div>
     </div>

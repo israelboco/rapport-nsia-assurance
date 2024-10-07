@@ -38,20 +38,31 @@ class AuthController extends Controller
         $credentials = $request->only('code_unique', 'password');
         // $credentials['role'] = 'admin';
 
-        $exist = User::where('code_unique',$request->code_unique)->first();
-        if(!$exist)
-            return back()->with(['danger' => 'Mauvais Code ou mot de passe' ]);
-        if($exist->is_blocked)
-            return back()->with(['danger' => 'Votre compte a été bloqué']);
+        $exist = User::where('code_unique', $request->code_unique)->first();
+        if(!$exist){
+            flash()->error('Mauvais Code');
+            return back();
+        }
+        if($exist){
+            $valid_password = Hash::check($request->password, $exist->password);
+            if(!$valid_password){
+                flash()->error('Mauvais mot de passe');
+                return back();
+            }
+        }
+        if($exist->is_blocked){
+            flash()->error('Votre compte a été bloqué');
+            return back();
+        }
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             Auth::login($user);
-            
             return redirect()->route('home');
         }
 
-        return back()->with(['danger' => 'Mauvais Code ou mot de passe' ]);
+        flash()->error('Mauvais Code ou mot de passe');
+        return back();
     }
     
     public function forget(){
@@ -96,7 +107,7 @@ class AuthController extends Controller
 
         Auth::logout();
 
-        return redirect()->route('auth.login');
+        return redirect()->route('login');
     }
 
 }

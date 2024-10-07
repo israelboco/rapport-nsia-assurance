@@ -35,7 +35,7 @@
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="brand-wrapper" style="font-size:1.5em">
-              @if (Session::get('danger'))
+              <!-- @if (Session::get('danger'))
                 <div class="alert alert-danger">
                   {{ Session::get('danger')}}
                 </div>
@@ -44,7 +44,7 @@
                 <div class="alert alert-success">
                   {{ Session::get('success')}}
                 </div>
-              @endif
+              @endif -->
             </div>
 
             <div class="row">
