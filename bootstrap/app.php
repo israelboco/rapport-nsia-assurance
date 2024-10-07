@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
+        $middleware->alias([
+            'agent' => \App\Http\Middleware\AgentAccess::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

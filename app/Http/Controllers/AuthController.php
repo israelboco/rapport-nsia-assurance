@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\Models\ResetCodePassword;
 use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
@@ -27,7 +28,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
         if ($validation->fails()){
-            Session::flash('danger', "Erreur dans le formulaire");
+            // Session::flash('danger', "Erreur dans le formulaire");
             $validation->validate($request, [
                 'code_unique' => 'required',
                 'password' => 'required',
@@ -40,17 +41,17 @@ class AuthController extends Controller
         $exist = User::where('code_unique',$request->code_unique)->first();
         if(!$exist)
             return back()->with(['danger' => 'Mauvais Code ou mot de passe' ]);
-        if(!$exist->is_blocked)
+        if($exist->is_blocked)
             return back()->with(['danger' => 'Votre compte a été bloqué']);
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             Auth::login($user);
             
-            return redirect()->route('dashboard');
+            return redirect()->route('home');
         }
 
-        return back()->with(['danger' => 'Mauvais Pseudo ou mot de passe' ]);
+        return back()->with(['danger' => 'Mauvais Code ou mot de passe' ]);
     }
     
     public function forget(){
@@ -58,48 +59,17 @@ class AuthController extends Controller
         return view('auth.forget');
     }
 
-    public function exist(Request $request, MailService $mailer){
-        $request->validate([
-            'email' => 'required',
-        ]);
-            
-        $user = User::where(['email' => $request->email])->first();
-
-        if($user){
-            $token = new ResetCodePassword(); 
-            $token->code = bin2hex(random_bytes(8));
-            $token->email = $user->id;
-            $token->created_at = new \DateTime("+1 day");
-            $token->save();
-            
-            $url = asset(route('auth.reset')."?t=".$token->token."&u=".$user->email);
-
-            //sendin email with reactivation email
-            $mailer->passwordMail($url, $user->email);
-
-            Session::put('forget_email', $user->email);
-
-            return redirect()->route('auth.link-sended');
-        }else
-            return back()->with('fail','Cette adresse mail non valide');
-    }
-
-    public function linkSended(){
-        return view('auth.resend',[
-            'email' => Session::pull('forget_email')
-        ]);
-    }
-
     public function reset(Request $request){
         // dd($request->t);
         $token = ResetCodePassword::where([
-            'token' => $request->t,
-            'email' => $request->u
+            'token' => $request->token,
+            'email' => $request->email
         ])
         ->orderBy('id', 'desc')
         ->first();
 
         $created_date = new \DateTime($token->created_at);
+        $expired_date = $created_date->add(new \DateInterval('PT15M'));
         $date = new \DateTime();
 
         if($date > $expired_date)

@@ -8,8 +8,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <link rel="shortcut icon" type="image/png" href="{{asset('img/logo_nsia.png')}}" />
 
-  <title>SB Admin 2 - Login</title>
+
+  <title>Rapport NSIA Vie Assurance - Login</title>
 
   <!-- Custom fonts for this template-->
   <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -32,19 +34,37 @@
         <div class="card o-hidden border-0 shadow-lg my-5">
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
+            <div class="brand-wrapper" style="font-size:1.5em">
+              @if (Session::get('danger'))
+                <div class="alert alert-danger">
+                  {{ Session::get('danger')}}
+                </div>
+              @endif
+              @if (Session::get('success'))
+                <div class="alert alert-success">
+                  {{ Session::get('success')}}
+                </div>
+              @endif
+            </div>
+
             <div class="row">
-              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+              <div class="col-lg-6 d-none d-lg-block">
+                <img src="{{ asset('img/logo_nsia.jpeg') }}" alt="icon NSIA" style="height: 100%; width: auto;">
+              </div>
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Bienvenue !</h1>
                   </div>
-                  <form class="user">
+                  <form class="user"action="{{route('auth.check')}}" method="post">
+                    @csrf
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <input type="text" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Entrer votre Code..." name="code_unique">
+                      <span class="text-danger small">@error('code_unique'){{ $message }} @enderror </span>
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                      <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" name='password'>
+                      <span class="text-danger small">@error('password'){{ $message }} @enderror </span>
                     </div>
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
@@ -52,23 +72,14 @@
                         <label class="custom-control-label" for="customCheck">Remember Me</label>
                       </div>
                     </div>
-                    <a href="index.html" class="btn btn-primary btn-user btn-block">
-                      Login
-                    </a>
+                    <!-- <a href="index.html" class="btn btn-primary btn-user btn-block">
+                      Connexion
+                    </a> -->
+                    <button type="submit" class="btn btn-primary btn-user btn-block">Connexion</button>
                     <hr>
-                    <a href="index.html" class="btn btn-google btn-user btn-block">
-                      <i class="fab fa-google fa-fw"></i> Login with Google
-                    </a>
-                    <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                      <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                    </a>
                   </form>
-                  <hr>
                   <div class="text-center">
-                    <a class="small" href="forgot-password.html">Forgot Password?</a>
-                  </div>
-                  <div class="text-center">
-                    <a class="small" href="register.html">Create an Account!</a>
+                    <a class="small" href="#forgot-password.html">Mot de passe oublié ?</a>
                   </div>
                 </div>
               </div>

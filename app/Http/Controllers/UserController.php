@@ -6,14 +6,31 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class HomeController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('dashboard');
+        $date = today(); // Date du jour    
+        // $ca = $agent->chiffreAffairesDuJour($date);
+    
+    }
+
+    public function voirToutesActions()
+    {
+        $agentPrincipal = User::where('id', Auth::user()->id)->first();
+        $subordinates = $agentPrincipal->tousLesSubordonnés()->get();
+
+        // Récupérer les actions (contrats) de tous les subordonnés
+        $actions = collect();
+
+        foreach ($subordinates as $subordinate) {
+            $actions = $actions->merge($subordinate->contrats);
+        }
+
+        return view('actions.index', compact('actions'));
     }
 
     /**
@@ -63,16 +80,4 @@ class HomeController extends Controller
     {
         //
     }
-
-    public function voirActions(User $agent)
-    {
-        $currentAgent = User::where('id', Auth::user()->id)->first();
-
-        if ($currentAgent->peutVoir($agent)) {
-            // Afficher les actions de l'agent
-        } else {
-            abort(403, 'Accès refusé');
-        }
-    }
-    
 }

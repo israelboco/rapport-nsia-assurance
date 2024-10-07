@@ -18,14 +18,15 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('code_unique')->unique();
-            $table->foreignId('role_id')->constrained()->onDelete('cascade');
+            $table->foreignId('role_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('telephone');
             $table->string('profile')->default('profile.png');
             $table->string('domicile');
-            $table->string('ifu')->unique();
+            $table->string('ifu')->unique()->nullable();
             $table->boolean('is_blocked')->default(false);
-            $table->string('compte_bancaire')->unique();
-            $table->foreignId('service_id')->constrained()->onDelete('cascade');
+            $table->boolean('is_admin')->default(false);
+            $table->string('compte_bancaire')->unique()->nullable();
+            $table->foreignId('service_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('supervisor_id')->nullable()->constrained('users')->onDelete('set null'); // Agent supérieur
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
