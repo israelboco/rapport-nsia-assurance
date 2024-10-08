@@ -59,11 +59,11 @@
                   <form class="user"action="{{route('auth.check')}}" method="post">
                     @csrf
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Entrer votre Code..." name="code_unique">
+                      <input type="text" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Entrer votre Code..." name="code_unique" required>
                       <span class="text-danger small">@error('code_unique'){{ $message }} @enderror </span>
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" name='password'>
+                      <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" name='password' required>
                       <span class="text-danger small">@error('password'){{ $message }} @enderror </span>
                     </div>
                     <div class="form-group">

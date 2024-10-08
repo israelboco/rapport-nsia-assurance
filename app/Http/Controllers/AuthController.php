@@ -73,7 +73,7 @@ class AuthController extends Controller
     public function reset(Request $request){
         // dd($request->t);
         $token = ResetCodePassword::where([
-            'token' => $request->token,
+            'code' => $request->code,
             'email' => $request->email
         ])
         ->orderBy('id', 'desc')
@@ -83,12 +83,15 @@ class AuthController extends Controller
         $expired_date = $created_date->add(new \DateInterval('PT15M'));
         $date = new \DateTime();
 
-        if($date > $expired_date)
-            dd('Error code expired');
+        if($date > $expired_date){
+            // dd('Error code expired');
+            flash()->error('Error code expired');
+            return back();
+        }
 
         $user = User::where('email', $token->email)->first();
 
-        return view('auth.reset',compact('user'));
+        return view('auth.reset', compact('user'));
     }
 
     public function update_pass(Request $request, $id){

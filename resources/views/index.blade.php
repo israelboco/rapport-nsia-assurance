@@ -30,132 +30,92 @@
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('home')}}">
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('home')}}">
         <div class="sidebar-brand-icon rotate-n-15">
-          <!-- <i class="fas fa-laugh-wink"></i> -->
-          <img src="{{ asset('img/logo_nsia.png') }}" alt="Logo NSIA" style="width: 60px; height: 60px;">
+            <img src="{{ asset('img/logo_nsia.png') }}" alt="Logo NSIA" style="width: 60px; height: 60px;">
         </div>
         <div class="sidebar-brand-text mx-3">Rapport <sup>NSIA</sup></div>
-      </a>
+    </a>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
 
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item">
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item">
         <a class="nav-link" href="{{route('home')}}">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li>
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+    <!-- Divider -->
+    <hr class="sidebar-divider">
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        SERVICES
-      </div>
+  @if($user->is_admin)
+    <!-- Heading -->
+    <div class="sidebar-heading">SERVICES</div>
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+    <!-- Nav Item - Services Collapse Menu -->
+    <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Services</span>
+            <i class="fas fa-fw fa-briefcase"></i>
+            <span>Services</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <!-- <h6 class="collapse-header">Services:</h6> -->
-            <a class="collapse-item" href="buttons.html">Service</a>
-            <a class="collapse-item" href="buttons.html">Rôle</a>
-            <!-- <a class="collapse-item" href="cards.html">Cards</a> -->
-          </div>
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{route('service.index')}}">Service</a>
+                <a class="collapse-item" href="{{route('role.index', '1')}}">Rôle</a>
+            </div>
         </div>
-      </li>
+    </li>
 
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <!-- <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
-          <span>Utilities</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
-            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
-          </div>
-        </div>
-      </li> -->
+    <!-- Divider -->
+    <hr class="sidebar-divider">
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+  @endif
+    <!-- Heading -->
+    <div class="sidebar-heading">PERSONNELLES</div>
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        PERSONNELLES
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item active">
+    <!-- Nav Item - Agents Collapse Menu -->
+    <li class="nav-item">
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Agents</span>
+            <i class="fas fa-fw fa-user"></i>
+            <span>Agents</span>
         </a>
         <div id="collapsePages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <!-- <h6 class="collapse-header">Agent:</h6> -->
-            <a class="collapse-item" href="login.html">Agent</a>
-            <!-- <a class="collapse-item" href="register.html">Rôle</a> -->
-            <!-- <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item active" href="blank.html">Blank Page</a> -->
-          </div>
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{route('user.index')}}">Agent</a>
+                <a class="collapse-item" href="{{route('user.chiffre_affaire')}}">Chiffre d'affaire</a>
+            </div>
         </div>
-      </li>
+    </li>
 
-      <!-- Nav Item - Charts -->
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span></a>
-      </li> -->
+    <!-- Divider -->
+    <hr class="sidebar-divider">
 
-      <!-- Nav Item - Tables -->
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span></a>
-      </li> -->
+    <!-- Heading -->
+    <div class="sidebar-heading">CONTRAT</div>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-      
-      <div class="sidebar-heading">
-        CONTRAT
-      </div>
+    <!-- Nav Item - Contrat -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('contrat.index')}}">
+            <i class="fas fa-file-alt"></i>
+            <span>Contrat</span>
+        </a>
+    </li>
 
-      <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link" href="tables.html">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Contrat</span></a>
-        </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
 
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
-
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
+    </div>
 
     </ul>
     <!-- End of Sidebar -->
+
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -213,8 +173,8 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
-                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{$user->nom}} {{$user->prenom}}</span>
+                <img class="img-profile rounded-circle" src="{{asset($user->profile)}}">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -247,6 +207,11 @@
 
       </div>
       <!-- End of Main Content -->
+
+      <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
       <!-- Footer -->
       <footer class="sticky-footer bg-white">

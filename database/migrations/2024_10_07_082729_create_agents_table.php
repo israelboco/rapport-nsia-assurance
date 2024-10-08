@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('code_unique')->unique();
             $table->foreignId('role_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('telephone');
-            $table->string('profile')->default('profile.png');
+            $table->string('profile')->default('profile/profile.png');
             $table->string('domicile');
             $table->string('ifu')->unique()->nullable();
             $table->boolean('is_blocked')->default(false);

@@ -1,5 +1,6 @@
 @extends("index")
-@session('content')
+
+@section('content')
 
  <!-- Begin Page Content -->
  <div class="container-fluid">
@@ -301,4 +302,4 @@
  </div>
     <!-- /.container-fluid -->
 
-@endsession
+@endsection

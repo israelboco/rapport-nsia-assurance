@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class HomeController extends Controller
+class ContratController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user = Auth::user();
-        return view('dashboard', compact(['user']));
+        //
     }
 
     /**
@@ -64,16 +61,4 @@ class HomeController extends Controller
     {
         //
     }
-
-    public function voirActions(User $agent)
-    {
-        $currentAgent = User::where('id', Auth::user()->id)->first();
-
-        if ($currentAgent->peutVoir($agent)) {
-            // Afficher les actions de l'agent
-        } else {
-            abort(403, 'Accès refusé');
-        }
-    }
-    
 }
