@@ -19,6 +19,9 @@ class AgentAccess
         if(!Auth::user())
             return to_route('login')->with('danger',"Veuillez vous connecter.");
 
+        if(Auth::user() && Auth::user()->is_blocked)
+            return to_route('login')->with('danger',"Votre compte a été bloqué.");
+        
         // if(in_array(Auth::user()->role, array("owner","visitor")))
         //     return to_route('auth.login')->with('danger',"Vous n'avez pas l'autorisation.");
 

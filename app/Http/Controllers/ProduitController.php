@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
+use App\Models\Produit;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class RoleController extends Controller
+class ProduitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,29 +19,16 @@ class RoleController extends Controller
         $services = Service::all();
 
         if (request()->ajax()) {
-            $roles = Role::where('service_id', $serviceId)->get();
-            $roles->transform(function($query){
+            $produits = Produit::where('service_id', $serviceId)->get();
+            $produits->transform(function($query){
                 $query->service = Service::where('id', $query->service_id)->first();
                 return $query;
             });
-            return response()->json($roles); 
+            return response()->json($produits); 
         }
         
-        $roles = Role::where('service_id', $serviceId)->get();
-        return view('role.index', compact(['user', 'services', 'roles']));
-    }
-
-    public function showServices() {
-        $user = Auth::user();
-        $services = Service::all();
-        $selectedService = Service::find(session('selected_service_id'));
-        if (request()->ajax()) {
-            if(!$user->is_admin){
-                $services = Service::where('id', $user->service_id)->get();
-            }
-            return response()->json($services); 
-        }
-        return view('role.index', compact('services', 'selectedService'));
+        $produits = Produit::where('service_id', $serviceId)->get();
+        return view('produit.index', compact(['user', 'services', 'produits']));
     }
 
     /**
@@ -59,7 +46,6 @@ class RoleController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'nom' => 'required',
-            'niveau' => 'required',
             'service_id' => 'required',
         ]);
 
@@ -69,25 +55,16 @@ class RoleController extends Controller
             }
             $validation->validate($request, [
                 'nom' => 'required',
-                'niveau' => 'required',
                 'service_id' => 'required',
             ]);
         }
 
-        $niveau = $request->niveau;
-        $exist = Role::where('niveau', $request->niveau)->first();
-        if($exist){
-            $actuel = Role::count();
-            $exist->niveau = $actuel + 1;
-            $exist->save();
-        }
-        $role = Role::create([
+        $produit = Produit::create([
             'nom' => $request->nom,
-            'niveau' => $niveau,
             'service_id' => $request->service_id
         ]);
 
-        flash()->success('Role créé avec succès');
+        flash()->success('Produit créé avec succès');
 
         return back();
     }
@@ -111,35 +88,25 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, Produit $produit)
     {
         $validation = Validator::make($request->all(), [
             'nom' => 'required',
-            'niveau' => 'required',
             'service_id' => 'required',
         ]);
         if ($validation->fails()){
             $validation->validate($request, [
                 'nom' => 'required',
-                'niveau' => 'required',
                 'service_id' => 'required',
             ]);
         }
-
-
-        $niveau = $request->niveau;
-        $exist = Role::where('niveau', $request->niveau)->first();
-        if($exist && $exist->id != $role->id){
-            $exist->niveau = $role->niveau;
-            $exist->save();
-        }
-        $role->update([
+        
+        $produit->update([
             'nom' => $request->nom,
-            'niveau' => $niveau,
             'service_id' => $request->service_id
         ]);
 
-        flash()->success('Role modifier avec succès');
+        flash()->success('Produit modifier avec succès');
 
         return back();
     }
@@ -147,11 +114,11 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Role $role)
+    public function destroy(Produit $produit)
     {
-        $role->delete();
+        $produit->delete();
 
-        flash()->success('Role supprimer avec succès');
+        flash()->success('Produit supprimer avec succès');
 
         return back();
     }

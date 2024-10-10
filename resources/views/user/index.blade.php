@@ -136,22 +136,31 @@
                                                 <span class="ml-2">Update</span>
                                             </a>
                                             <div class="dropdown-divider"></div>
-                                            <!-- Delete -->
-                                            <a href="#" class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#deleteAgentModal{{ $item->id }}">
-                                                <button class="btn btn-danger btn-circle btn-sm">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                                <span class="ml-2">Delete</span>
-                                            </a>
-                                            <div class="dropdown-divider"></div>
-                                            <!-- Blocked -->
-                                            <a href="#" class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#blockedAgentModal{{ $item->id }}">
-                                                <button class="btn btn-circle btn-sm" style="background-color: #fd7e14; color: white;">
-                                                    <i class="fas fa-ban"></i>
-                                                </button>
-                                                <span class="ml-2">Blocked</span>
-                                            </a>
-                                            <div class="dropdown-divider"></div>
+                                            @if($user->is_admin)
+                                                <!-- Delete -->
+                                                <a href="#" class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#deleteAgentModal{{ $item->id }}">
+                                                    <button class="btn btn-danger btn-circle btn-sm">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                    <span class="ml-2">Delete</span>
+                                                </a>
+                                                <div class="dropdown-divider"></div>
+                                                <!-- Blocked -->
+                                                <a href="#" class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#blockedAgentModal{{ $item->id }}">
+                                                    @if(!$item->is_blocked)
+                                                        <button class="btn btn-circle btn-sm" style="background-color: #fd7e14; color: white;">
+                                                            <i class="fas fa-ban"></i>
+                                                        </button>
+                                                        <span class="ml-2">Blocked</span>
+                                                    @else
+                                                        <button class="btn btn-circle btn-sm" style="background-color: #28a745; color: white;">
+                                                            <i class="fas fa-unlock-alt"></i>
+                                                        </button>
+                                                        <span class="ml-2">Unlock</span>
+                                                    @endif
+                                                </a>
+                                                <div class="dropdown-divider"></div>
+                                            @endif
                                             <!-- Contrat -->
                                             <a href="{{route('user.contrat', $item->id)}}" class="dropdown-item d-flex align-items-center">
                                                 <button class="btn btn-warning btn-circle btn-sm">
@@ -180,9 +189,162 @@
                                         @csrf
                                         @method('put')
                                         <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control form-control-user" id="exampleInputNom" placeholder="Entrer le Nom..." name="nom" required value="{{$item->nom}}">
+                                                        <span class="text-danger small">@error('nom'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control form-control-user" id="exampleInputPrenom" placeholder="Entrer le Prenom..." name="prenom" required value="{{$item->prenom}}">
+                                                        <span class="text-danger small">@error('prenom'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control form-control-user" id="exampleInputCode" placeholder="Entrer le Code..." name="code_unique" required value="{{$item->code_unique}}">
+                                                        <span class="text-danger small">@error('code_unique'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Entrer le Email..." name="email" required value="{{$item->email}}">
+                                                        <span class="text-danger small">@error('email'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="sexe">Sélectionner: le Sexe</label>
+                                                        <select name="sexe" id="sexe" class="form-control" required style="border-radius: 10rem;">
+                                                            <option value="" disabled selected>Sexe</option>
+                                                                <option value="MASCULIN" {{ $item->sexe == 'MASCULIN' ? 'selected' : '' }}>MASCULIN</option>
+                                                                <option value="FEMININ" {{ $item->sexe == 'FEMININ' ? 'selected' : '' }}>FEMININ</option>
+                                                        </select>
+                                                        <span class="text-danger small">@error('sexe'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="date_naissance">Entrer la Date de Naissance</label>
+                                                        <input type="date" class="form-control form-control-user" id="date_naissance" aria-describedby="emailHelp" placeholder="Entrer la Date de Naissance..." name="date_naissance" required value="{{$item->date_naissance}}">
+                                                        <span class="text-danger small">@error('date_naissance'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Telephone..." name="telephone" required value="{{$item->telephone}}">
+                                                        <span class="text-danger small">@error('telephone'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Domicile..." name="domicile" required value="{{$item->domicile}}">
+                                                        <span class="text-danger small">@error('domicile'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Lieu de naissance..." name="lieu_naissance" required value="{{$item->lieu_naissance}}">
+                                                        <span class="text-danger small">@error('lieu_naissance'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Banque..." name="banque" value="{{$item->banque}}">
+                                                        <span class="text-danger small">@error('banque'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="number" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le IFU..." name="ifu" value="{{$item->ifu}}">
+                                                        <span class="text-danger small">@error('ifu'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Compte bancaire..." name="compte_bancaire" value="{{$item->compte_bancaire}}">
+                                                        <span class="text-danger small">@error('compte_bancaire'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="mode_reglement">Sélectionner : le Mode de paiement</label>
+                                                        <select name="mode_reglement" id="mode_reglement" class="form-control" required style="border-radius: 10rem;">
+                                                            <option value="" disabled selected>Mode de paiement</option>
+                                                                <option value="MOMO" {{ $item->mode_reglement == 'MOMO' ? 'selected' : '' }}>MOMO</option>
+                                                                <option value="BANQUE" {{ $item->mode_reglement == 'BANQUE' ? 'selected' : '' }}>BANQUE</option>
+                                                                <option value="VIREMENT" {{ $item->mode_reglement == 'VIREMENT' ? 'selected' : '' }}>VIREMENT</option>
+                                                                <option value="CHEQUE" {{ $item->mode_reglement == 'CHEQUE' ? 'selected' : '' }}>CHEQUE</option>
+                                                        </select>
+                                                        <span class="text-danger small">@error('mode_reglement'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="date_collaboration">Entrer la Date de collaboration</label>
+                                                        <input type="date" class="form-control form-control-user" id="date_collaboration" aria-describedby="emailHelp" placeholder="Entrer la Date de collaboration..." name="date_collaboration" value="{{$item->date_collaboration}}">
+                                                        <span class="text-danger small">@error('date_collaboration'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <select name="service_id" id="service_id" class="form-control" required style="border-radius: 10rem;">
+                                                            <option value="" disabled selected>Sélectionner: le Service</option>
+                                                            @foreach($services as $service)
+                                                                <option value="{{$service->id}}" {{ (isset($item->service) && $item->service->id == $service->id) ? 'selected' : '' }}>
+                                                                    {{$service->nom}}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger">@error('service_id'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <select name="role_id" id="role_id" class="form-control" required style="border-radius: 10rem;">
+                                                            <option value="" disabled selected>Sélectionner: le Rôle</option>
+                                                            @foreach($roles as $role)
+                                                                <option value="{{$role->id}}" {{ (isset($item->role) && $item->role->id == $role->id) ? 'selected' : '' }}>
+                                                                    {{$role->nom}}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span class="text-danger">@error('role_id'){{ $message }} @enderror</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="form-group">
-                                                <input type="text" class="form-control form-control-user" id="exampleInputNom" placeholder="Entrer le Nom..." name="nom" value="{{ $item->nom }}">
-                                                <span class="text-danger small">@error('nom'){{ $message }} @enderror</span>
+                                                <label for="supervo_id">Sélectionner : ces supérieurs</label>
+                                                <select name="supervo_id[]" id="supervo_id" class="form-control" multiple>
+                                                    @foreach($agent_sup as $agent)
+                                                        <option value="{{$agent->id}}" {{ $item->supervo_id($agent->id) ? 'selected' : '' }}>
+                                                            {{$agent->nom}} {{$agent->prenom}} ({{$agent->role->nom}})
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <style>
+                                                    select option:checked {
+                                                        background-color: #28a745;
+                                                        color: white;
+                                                    }
+                                                </style>
+                                                <span class="text-danger">@error('supervo_id'){{ $message }} @enderror</span>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -193,44 +355,45 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Delete Service Modal-->
-                        <div class="modal fade" id="deleteAgentModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteAgentModalLabel{{ $item->id }}" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteAgentModalLabel{{ $item->id }}">Voulez-vous supprimer l'agent?</h5>
-                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">Sélectionnez « Supprimer » ci-dessous si vous êtes prêt à supprimer l'agent.</div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-                                        <a class="btn btn-primary" href="{{ route('user.delete', $item->id) }}">Supprimer</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Blocked Service Modal-->
-                        <div class="modal fade" id="blockedAgentModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="blockedAgentModalLabel{{ $item->id }}" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="blockedAgentModalLabel{{ $item->id }}">Voulez-vous bloquer l'agent?</h5>
-                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">×</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">Sélectionnez « Bloquer » ci-dessous si vous êtes prêt à bloquer l'agent.</div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-                                        <a class="btn btn-primary" href="{{ route('user.blocked', $item->id) }}">Bloquer</a>
+                        @if($user->is_admin)
+                            <!-- Delete Service Modal-->
+                            <div class="modal fade" id="deleteAgentModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteAgentModalLabel{{ $item->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteAgentModalLabel{{ $item->id }}">Voulez-vous supprimer l'agent?</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">Sélectionnez « Supprimer » ci-dessous si vous êtes prêt à supprimer l'agent.</div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                                            <a class="btn btn-primary" href="{{ route('user.delete', $item->id) }}">Supprimer</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            
+                            <!-- Blocked Service Modal-->
+                            <div class="modal fade" id="blockedAgentModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="blockedAgentModalLabel{{ $item->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="blockedAgentModalLabel{{ $item->id }}">{{ $item->is_blocked ? 'Voulez-vous débloquer l\'agent?' : 'Voulez-vous bloquer l\'agent?'}}</h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">{{ $item->is_blocked ? 'Sélectionnez « débloquer » ci-dessous si vous êtes prêt à débloquer l\'agent.' : 'Sélectionnez « Bloquer » ci-dessous si vous êtes prêt à bloquer l\'agent.'}}</div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                                            <a class="btn btn-primary" href="{{ route('user.blocked', $item->id) }}">{{ $item->is_blocked ? 'Débloquer': 'Bloquer'}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>
@@ -256,38 +419,156 @@
             <form class="user" action="{{route('user.store')}}" method="post">
                 @csrf
                 <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Nom..." name="nom" required>
-                        <span class="text-danger small">@error('nom'){{ $message }} @enderror</span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" id="exampleInputNom" placeholder="Entrer le Nom..." name="nom" required>
+                                <span class="text-danger small">@error('nom'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" id="exampleInputPrenom" placeholder="Entrer le Prenom..." name="prenom" required>
+                                <span class="text-danger small">@error('prenom'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" id="exampleInputCode" placeholder="Entrer le Code..." name="code_unique" required>
+                                <span class="text-danger small">@error('code_unique'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Entrer le Email..." name="email" required>
+                                <span class="text-danger small">@error('email'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="sexe">Sélectionner: le Sexe</label>
+                                <select name="sexe" id="sexe" class="form-control" required style="border-radius: 10rem;">
+                                    <option value="" disabled selected>Sexe</option>
+                                        <option value="MASCULIN">MASCULIN</option>
+                                        <option value="FEMININ">FEMININ</option>
+                                </select>
+                                <span class="text-danger small">@error('sexe'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="date_naissance">Entrer la Date de Naissance</label>
+                                <input type="date" class="form-control form-control-user" id="date_naissance" aria-describedby="emailHelp" placeholder="Entrer la Date de Naissance..." name="date_naissance" required>
+                                <span class="text-danger small">@error('date_naissance'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Telephone..." name="telephone" required>
+                                <span class="text-danger small">@error('telephone'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Domicile..." name="domicile" required>
+                                <span class="text-danger small">@error('domicile'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Lieu de naissance..." name="lieu_naissance" required>
+                                <span class="text-danger small">@error('lieu_naissance'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Banque..." name="banque" required>
+                                <span class="text-danger small">@error('banque'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="number" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le IFU..." name="ifu">
+                                <span class="text-danger small">@error('ifu'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Compte bancaire..." name="compte_bancaire">
+                                <span class="text-danger small">@error('compte_bancaire'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="mode_reglement">Sélectionner : le Mode de paiement</label>
+                                <select name="mode_reglement" id="mode_reglement" class="form-control" required style="border-radius: 10rem;">
+                                    <option value="" disabled selected>Mode de paiement</option>
+                                        <option value="MOMO">MOMO</option>
+                                        <option value="BANQUE">BANQUE</option>
+                                        <option value="VIREMENT">VIREMENT</option>
+                                        <option value="CHEQUE">CHEQUE</option>
+                                </select>
+                                <span class="text-danger small">@error('mode_reglement'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="date_collaboration">Entrer la Date de collaboration</label>
+                                <input type="date" class="form-control form-control-user" id="date_collaboration" aria-describedby="emailHelp" placeholder="Entrer la Date de collaboration..." name="date_collaboration">
+                                <span class="text-danger small">@error('date_collaboration'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <select name="service_id" id="service_id" class="form-control" required style="border-radius: 10rem;">
+                                    <option value="" disabled selected>Sélectionner: le Service</option>
+                                    @foreach($services as $service)
+                                        <option value="{{$service->id}}">
+                                            {{$service->nom}}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <span class="text-danger">@error('service_id'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <select name="role_id" id="role_id" class="form-control" required style="border-radius: 10rem;">
+                                    <option value="" disabled selected>Sélectionner: le Rôle</option>
+                                    @foreach($roles as $role)
+                                        <option value="{{$role->id}}">
+                                            {{$role->nom}}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <span class="text-danger">@error('role_id'){{ $message }} @enderror</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Prenom..." name="prenom" required>
-                        <span class="text-danger small">@error('prenom'){{ $message }} @enderror</span>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Code..." name="code_unique" required>
-                        <span class="text-danger small">@error('code_unique'){{ $message }} @enderror</span>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Email..." name="email" required>
-                        <span class="text-danger small">@error('email'){{ $message }} @enderror</span>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Telephone..." name="telephone" required>
-                        <span class="text-danger small">@error('telephone'){{ $message }} @enderror</span>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Domicile..." name="domicile" required>
-                        <span class="text-danger small">@error('domicile'){{ $message }} @enderror</span>
-                    </div>
-                    <div class="form-group">
-                        <input type="number" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le IFU..." name="ifu">
-                        <span class="text-danger small">@error('ifu'){{ $message }} @enderror</span>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Compte bancaire..." name="compte_bancaire">
-                        <span class="text-danger small">@error('compte_bancaire'){{ $message }} @enderror</span>
+                        <label for="supervo_id">Sélectionner : ces supérieurs</label>
+                        <select name="supervo_id[]" id="supervo_id" class="form-control" multiple>
+                            @foreach($agent_sup as $agent)
+                                <option value="{{$agent->id}}">
+                                    {{$agent->nom}} {{$agent->prenom}} ({{$agent->role->nom}})
+                                </option>
+                            @endforeach
+                        </select>
+                        <span class="text-danger">@error('supervo_id'){{ $message }} @enderror</span>
                     </div>
                 </div>
                 <div class="modal-footer">

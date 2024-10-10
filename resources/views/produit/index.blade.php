@@ -5,7 +5,7 @@
   <!-- Begin Page Content -->
   <div class="container-fluid">
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Roles</h1>
+    <h1 class="h3 mb-2 text-gray-800">Produits</h1>
     <div class="d-flex justify-content-between align-items-center mb-2">
         <!-- Navbar à gauche -->
         <nav class="navbar navbar-expand navbar-light bg-light">
@@ -28,11 +28,11 @@
             function updateSelectedService(nom, serviceId) {
                 document.getElementById('selectedServiceName').textContent = nom;
                 document.getElementById('selectedServiceId').value = serviceId;
-                // Fetch roles of the selected service and update the table dynamically
-                fetchRolesForService(serviceId);
+                // Fetch Produits of the selected service and update the table dynamically
+                fetchProduitsForService(serviceId);
             }
 
-            function fetchRolesForService(serviceId) {
+            function fetchProduitsForService(serviceId) {
                 // Requête AJAX pour récupérer les rôles en fonction du serviceId
 
                 let $services;
@@ -54,34 +54,33 @@
                     dataType: 'json', // Les données doivent être en format JSON
                     success: function(data) {
                         // Vider les lignes de table existantes
-                        $('#rolesTableBody').empty();
+                        $('#ProduitsTableBody').empty();
 
-                        data.forEach(function(role) {
+                        data.forEach(function(produit) {
 
                             $services.forEach(function(service) {
-                                let selected = (service.id === role.service.id) ? 'selected' : '';
+                                let selected = (service.id === produit.service.id) ? 'selected' : '';
                                 serviceOptions += `<option value="${service.id}" ${selected}>${service.nom}</option>`;
                             });
                         });
                         
                         // Parcourir les rôles renvoyés par la requête AJAX
-                        data.forEach(function(role) {
+                        data.forEach(function(produit) {
                             // Créer des lignes de table avec des IDs dynamiques pour les modales
-                            const roleRow = `
+                            const produitRow = `
                                 <tr>
-                                    <td>${role.service.nom}</td>
-                                    <td>${role.nom}</td>
-                                    <td>${role.niveau}</td>
+                                    <td>${produit.service.nom}</td>
+                                    <td>${produit.nom}</td>
                                     <td>
                                         <nav class="navbar navbar-expand navbar-light bg-light" style="width: auto;">
                                             <ul class="navbar-nav d-flex">
                                                 <li class="nav-item dropdown">
-                                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAction${role.id}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAction${produit.id}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         Action
                                                     </a>
-                                                    <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdownAction${role.id}">
+                                                    <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdownAction${produit.id}">
                                                         <!-- Modifier -->
-                                                        <a href="#" class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#updateRoleModal${role.id}">
+                                                        <a href="#" class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#updateProduitModal${produit.id}">
                                                             <button class="btn btn-warning btn-circle btn-sm">
                                                                 <i class="fas fa-sync-alt"></i>
                                                             </button>
@@ -89,7 +88,7 @@
                                                         </a>
                                                         <div class="dropdown-divider"></div>
                                                         <!-- Supprimer -->
-                                                        <a href="#" class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#deleteRoleModal${role.id}">
+                                                        <a href="#" class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#deleteProduitModal${produit.id}">
                                                             <button class="btn btn-danger btn-circle btn-sm">
                                                                 <i class="fas fa-trash"></i>
                                                             </button>
@@ -103,29 +102,27 @@
                                 </tr>
                             `;
                             // Ajouter la ligne et les modales à la table
-                            $('#rolesTableBody').append(roleRow);
+                            $('#ProduitsTableBody').append(produitRow);
 
-                            if ($("#updateRoleModal" + role.id).length === 0) {
+                            if ($("#updateProduitModal" + produit.id).length === 0) {
                             var modalHTML = `
-                                <div class="modal fade" id="updateRoleModal${role.id}" tabindex="-1" role="dialog" aria-labelledby="updateRoleModalLabel${role.id}" aria-hidden="true">
+                                <div class="modal fade" id="updateProduitModal${produit.id}" tabindex="-1" role="dialog" aria-labelledby="updateProduitModalLabel${produit.id}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="updateRoleModalLabel${role.id}">Modifier le rôle</h5>
+                                                <h5 class="modal-title" id="updateProduitModalLabel${produit.id}">Modifier le rôle</h5>
                                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">×</span>
                                                 </button>
                                             </div>
-                                            <form class="user" action="/role/update/${role.id}" method="post" enctype="multipart/form-data">
+                                            <form class="user" action="/role/update/${produit.id}" method="post" enctype="multipart/form-data">
                                                 @csrf
                                                 @method('put')
                                                 <div class="modal-body">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control form-control-user" placeholder="Entrer le Nom..." name="nom" value="${role.nom}">
+                                                        <input type="text" class="form-control form-control-user" placeholder="Entrer le Nom..." name="nom" value="${produit.nom}">
                                                     </div>
-                                                    <div class="form-group">
-                                                        <input type="number" class="form-control form-control-user" placeholder="Entrer le Niveau..." name="niveau" value="${role.niveau}">
-                                                    </div>
+                                                    
                                                     <div class="form-group">
                                                         <select name="service_id" class="form-control" required>
                                                             ${serviceOptions}
@@ -140,20 +137,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Delete Role Modal -->
-                                <div class="modal fade" id="deleteRoleModal${role.id}" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel${role.id}" aria-hidden="true">
+                                <!-- Delete Produit Modal -->
+                                <div class="modal fade" id="deleteProduitModal${produit.id}" tabindex="-1" role="dialog" aria-labelledby="deleteProduitModalLabel${produit.id}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="deleteRoleModalLabel${role.id}">Voulez-vous supprimer ce rôle ?</h5>
+                                                <h5 class="modal-title" id="deleteProduitModalLabel${produit.id}">Voulez-vous supprimer ce produit ?</h5>
                                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">×</span>
                                                 </button>
                                             </div>
-                                            <div class="modal-body">Sélectionnez « Supprimer » ci-dessous si vous êtes prêt à supprimer le rôle.</div>
+                                            <div class="modal-body">Sélectionnez « Supprimer » ci-dessous si vous êtes prêt à supprimer le produit.</div>
                                             <div class="modal-footer">
                                                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-                                                <a class="btn btn-primary" href="/role/delete/${role.id}">Supprimer</a>
+                                                <a class="btn btn-primary" href="{{ route('produit.delete', $item->id) }}">Supprimer</a>
                                             </div>
                                         </div>
                                     </div>
@@ -182,13 +179,13 @@
     </div>
 
     <div>
-        <p class="mb-4">Liste des rôles.</p>
+        <p class="mb-4">Liste des produits.</p>
     </div>
 
     <!-- DataTables Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Roles</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Produits</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -197,16 +194,14 @@
                         <tr>
                             <th>Service</th>
                             <th>Nom</th>
-                            <th>Niveau</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="rolesTableBody">
-                        @foreach($roles as $item)
+                    <tbody id="ProduitsTableBody">
+                        @foreach($produits as $item)
                             <tr>
                                 <td>{{ $item->service->nom }}</td>
                                 <td>{{ $item->nom }}</td>
-                                <td>{{ $item->niveau }}</td>
                                 <td>
                                     <nav class="navbar navbar-expand navbar-light bg-light" style="width: auto;">
                                         <ul class="navbar-nav d-flex">
@@ -216,7 +211,7 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdownAction{{ $item->id }}">
                                                     <!-- Update -->
-                                                    <a href="#" class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#updateRoleModal{{ $item->id }}">
+                                                    <a href="#" class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#updateProduitModal{{ $item->id }}">
                                                         <button class="btn btn-warning btn-circle btn-sm">
                                                             <i class="fas fa-sync-alt"></i>
                                                         </button>
@@ -224,7 +219,7 @@
                                                     </a>
                                                     <div class="dropdown-divider"></div>
                                                     <!-- Delete -->
-                                                    <a href="#" class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#deleteRoleModal{{ $item->id }}">
+                                                    <a href="#" class="dropdown-item d-flex align-items-center" data-toggle="modal" data-target="#deleteProduitModal{{ $item->id }}">
                                                         <button class="btn btn-danger btn-circle btn-sm">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
@@ -237,26 +232,22 @@
                                 </td>
 
                                 <!-- Modifier Service Modal -->
-                                <div class="modal fade" id="updateRoleModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="updateRoleModalLabel{{ $item->id }}" aria-hidden="true">
+                                <div class="modal fade" id="updateProduitModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="updateProduitModalLabel{{ $item->id }}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="updateRoleModalLabel{{ $item->id }}">Modifier le rôle</h5>
+                                                <h5 class="modal-title" id="updateProduitModalLabel{{ $item->id }}">Modifier le rôle</h5>
                                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">×</span>
                                                 </button>
                                             </div>
-                                            <form class="user" action="{{ route('role.update', $item->id) }}" method="post" enctype="multipart/form-data">
+                                            <form class="user" action="{{ route('produit.update', $item->id) }}" method="post" enctype="multipart/form-data">
                                                 @csrf
                                                 @method('put')
                                                 <div class="modal-body">
                                                     <div class="form-group">
                                                         <input type="text" class="form-control form-control-user" id="exampleInputNom" placeholder="Entrer le Nom..." name="nom" value="{{ $item->nom }}" required>
                                                         <span class="text-danger small">@error('nom'){{ $message }} @enderror</span>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input type="number" class="form-control form-control-user" id="niveau" placeholder="Entrer le Niveau..." name="niveau" value="{{ $item->niveau }}" required>
-                                                        <span class="text-danger small">@error('niveau'){{ $message }} @enderror</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <select name="service_id" id="service_id" class="form-control" required>
@@ -281,19 +272,19 @@
                                 </div>
 
                                 <!-- Delete Role Modal -->
-                                <div class="modal fade" id="deleteRoleModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel{{ $item->id }}" aria-hidden="true">
+                                <div class="modal fade" id="deleteProduitModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteProduitModalLabel{{ $item->id }}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="deleteRoleModalLabel{{ $item->id }}">Voulez-vous supprimer ce rôle ?</h5>
+                                                <h5 class="modal-title" id="deleteProduitModalLabel{{ $item->id }}">Voulez-vous supprimer ce produit ?</h5>
                                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">×</span>
                                                 </button>
                                             </div>
-                                            <div class="modal-body">Sélectionnez « Supprimer » ci-dessous si vous êtes prêt à supprimer le rôle.</div>
+                                            <div class="modal-body">Sélectionnez « Supprimer » ci-dessous si vous êtes prêt à supprimer le produit.</div>
                                             <div class="modal-footer">
                                                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-                                                <a class="btn btn-primary" href="{{ route('role.delete', $item->id) }}">Supprimer</a>
+                                                <a class="btn btn-primary" href="{{ route('produit.delete', $item->id) }}">Supprimer</a>
                                             </div>
                                         </div>
                                     </div>
@@ -319,17 +310,13 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form class="user" action="{{route('role.store')}}" method="post">
+            <form class="user" action="{{route('produit.store')}}" method="post">
                 @csrf
                 <div class="modal-body">
                     <input id="selectedServiceId" type="text" hidden class="form-control form-control-user"  name="service_id">
                     <div class="form-group">
                         <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Nom..." name="nom" required>
                         <span class="text-danger small">@error('nom'){{ $message }} @enderror</span>
-                    </div>
-                    <div class="form-group">
-                        <input type="number" class="form-control form-control-user" id="niveau" aria-describedby="emailHelp" placeholder="Entrer le Niveau..." name="niveau" required>
-                        <span class="text-danger small">@error('niveau'){{ $message }} @enderror</span>
                     </div>
                 </div>
                 <div class="modal-footer">

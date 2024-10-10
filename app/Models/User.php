@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -19,7 +20,8 @@ class User extends Authenticatable
     protected $fillable = [
         'nom', 'prenom', 'email', 'password', 'code_unique', 'profile',
         'role_id', 'telephone', 'domicile', 'ifu',
-        'compte_bancaire', 'service_id', 'supervisor_id'
+        'compte_bancaire', 'service_id', 'sexe', 'mode_reglement', 'date_naissance',
+        'lieu_naissance', 'fixe', 'banque', 'date_collaboration'
     ];
 
     public function role()
@@ -30,16 +32,6 @@ class User extends Authenticatable
     public function service()
     {
         return $this->belongsTo(Service::class);
-    }
-
-    public function supervisor()
-    {
-        return $this->belongsTo(User::class, 'supervisor_id');
-    }
-
-    public function subordinates()
-    {
-        return $this->hasMany(User::class, 'supervisor_id');
     }
 
     public function contrats()
@@ -83,8 +75,24 @@ class User extends Authenticatable
                     ->sum('montant');
     }
 
-    public function tousLesSubordonnés()
+    // public function tousLesSubordonnés()
+    // {
+    //     return $this->subordinates()->with('tousLesSubordonnés');
+    // }
+   // Les superviseurs de cet utilisateur
+   public function supervisors(): HasMany
     {
-        return $this->subordinates()->with('tousLesSubordonnés');
+        return $this->hasMany(Supervisor::class, 'supervisor_id');
     }
+
+   public function subordinates(): HasMany
+    {
+        return $this->hasMany(Supervisor::class, 'user_id');
+    }
+
+    public function supervo_id(string $id)
+    {
+        return $this->supervisors()->where('supervisor_id', $id)->first();
+    }
+
 }

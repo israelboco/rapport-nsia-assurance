@@ -27,7 +27,6 @@ return new class extends Migration
             $table->boolean('is_admin')->default(false);
             $table->string('compte_bancaire')->unique()->nullable();
             $table->foreignId('service_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('supervisor_id')->nullable()->constrained('users')->onDelete('set null'); // Agent supérieur
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContratController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
@@ -33,6 +34,13 @@ Route::middleware(['agent'])->group(function () {
         Route::put('role/update/{role}', 'update')->name('role.update');
         Route::get('role/delete/{role}', 'destroy')->name('role.delete');
         Route::get('role/service/show', 'showServices')->name('service.select');
+    });
+
+    Route::controller(ProduitController::class)->group(function () {
+        Route::get('produit/index/{serviceId?}', 'index')->name('produit.index');  
+        Route::post('produit/create', 'store')->name('produit.store');
+        Route::put('produit/update/{produit}', 'update')->name('produit.update');
+        Route::get('produit/delete/{produit}', 'destroy')->name('produit.delete');
     });
 
     Route::controller(UserController::class)->group(function () {

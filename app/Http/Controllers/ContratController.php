@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contrat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContratController extends Controller
 {
@@ -11,7 +13,9 @@ class ContratController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $contrats = Contrat::where('user_id', $user->id)->paginate(15);
+        return view('contrat.index', compact(['user', 'contrats']));
     }
 
     /**

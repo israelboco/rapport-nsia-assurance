@@ -66,6 +66,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{route('service.index')}}">Service</a>
                 <a class="collapse-item" href="{{route('role.index', '1')}}">Rôle</a>
+                <a class="collapse-item" href="{{route('produit.index', '1')}}">Produit</a>
             </div>
         </div>
     </li>
@@ -86,7 +87,7 @@
         <div id="collapsePages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{route('user.index')}}">Agent</a>
-                <a class="collapse-item" href="{{route('user.chiffre_affaire')}}">Chiffre d'affaire</a>
+                <a class="collapse-item" href="{{route('user.chiffre_affaire')}}">Profile</a>
             </div>
         </div>
     </li>

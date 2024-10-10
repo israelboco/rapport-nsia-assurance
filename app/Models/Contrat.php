@@ -10,7 +10,7 @@ class Contrat extends Model
     use HasFactory;
 
     protected $fillable = [
-        'agent_id', 'nature', 'montant',
+        'user_id', 'nature', 'montant',
         'prospect_nom', 'prospect_prenom',
         'prospect_telephone', 'prospect_email',
         'lieu_signature', 'statut', 'date_conclusion'
