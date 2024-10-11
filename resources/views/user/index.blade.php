@@ -11,32 +11,34 @@
     <div class="d-flex justify-content-between align-items-center mb-2">
         <!-- Navbar à gauche -->
         <div>
+            <!-- Navbar pour Services -->
             <nav class="navbar navbar-expand navbar-light bg-light">
-                <a class="navbar-brand" href="#">Services : </a>
+                <a class="navbar-brand" href="#">Services :</a>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span id="selectedServiceName">Selectionner Service</span>
+                            <span id="selectedServiceName">{{ $select_service ? $select_service->nom : 'Sélectionner Service' }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
                             @foreach($services as $item)
-                                <a class="dropdown-item" href="#" onclick="updateSelectedService('{{ $item->nom }}', '{{ $item->id }}')">{{ $item->nom }}</a>
+                                <a class="dropdown-item" href="{{ $select_role ? url('user/index?service_id='.$item->id.'&role_id='.$select_role->id) : url('user/index?service_id='.$item->id.'&role_id=') }}" onclick="updateSelectedService('{{ $item->nom }}', '{{ $item->id }}')">{{ $item->nom }}</a>
                             @endforeach
                         </div>
                     </li>
                 </ul>
             </nav>
-            
+
+            <!-- Navbar pour Rôles -->
             <nav class="navbar navbar-expand navbar-light bg-light">
-                <a class="navbar-brand" href="#">Roles : </a>
+                <a class="navbar-brand" href="#">Rôles :</a>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span id="selectedRoleName">Selectionner Role</span>
+                            <span id="selectedRoleName">{{ $select_role ? $select_role->nom : 'Sélectionner Rôle' }}</span>
                         </a>
                         <div id="rolesSelect" class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
                             @foreach($roles as $item)
-                                <a class="dropdown-item" href="#" onclick="updateSelectedRole('{{ $item->nom }}', '{{ $item->id }}')">{{ $item->nom }}</a>
+                                <a class="dropdown-item" href="{{$select_service ? url('user/index?service_id='.$select_service->id.'&role_id='.$item->id) : url('user/index?service_id=&role_id='.$item->id)}}" onclick="updateSelectedRole('{{ $item->nom }}', '{{ $item->id }}')">{{ $item->nom }}</a>
                             @endforeach
                         </div>
                     </li>
@@ -49,45 +51,20 @@
                 document.getElementById('selectedServiceName').textContent = nom;
                 document.getElementById('selectedServiceId').value = serviceId;
                 // Fetch roles of the selected service and update the table dynamically
-                fetchRolesForService(serviceId);
             }
 
             function updateSelectedRole(nom, roleId) {
                 document.getElementById('selectedRoleName').textContent = nom;
-                document.getElementById('selectedRoleId').value = roleId; // Correct usage of roleId
+                document.getElementById('selectedRoleId').value = roleId;
                 // Fetch roles of the selected service and update the table dynamically
-                // fetchRolesForRole(roleId);
             }
-
-            function fetchRolesForService(serviceId) {
-                // Requête AJAX pour récupérer les rôles en fonction du serviceId
-                let $roles;
-                let $roleOptions = ''; // Initialize as an empty string
-
-                $.ajax({
-                    url: "{{ route('role.select') }}", // Assurez-vous que cette route existe
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        $roles = data;
-                        $roles.forEach(function(role) {
-                            $roleOptions += `<a class="dropdown-item" href="#" onclick="updateSelectedRole('${role.nom}', '${role.id}')">${role.nom}</a>`;
-                        });
-                        $('#rolesSelect').empty();
-                        $('#rolesSelect').append($roleOptions);
-                    }
-                });
-            };
         </script>
-
 
         <!-- Bouton à droite -->
         <a href="#" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#addAgentModal">
             <i class="fas fa-plus fa-sm text-white-50"></i> Ajouter
         </a>
     </div>
-
-
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -162,11 +139,11 @@
                                                 <div class="dropdown-divider"></div>
                                             @endif
                                             <!-- Contrat -->
-                                            <a href="{{route('user.contrat', $item->id)}}" class="dropdown-item d-flex align-items-center">
+                                            <a href="{{route('user.profile', $item->id)}}" class="dropdown-item d-flex align-items-center">
                                                 <button class="btn btn-warning btn-circle btn-sm">
                                                     <i class="fas fa-file-alt"></i>
                                                 </button>
-                                                <span class="ml-2">Contrat</span>
+                                                <span class="ml-2">Profile</span>
                                             </a>
 
                                         </div>
@@ -333,7 +310,7 @@
                                                 <label for="supervo_id">Sélectionner : ces supérieurs</label>
                                                 <select name="supervo_id[]" id="supervo_id" class="form-control" multiple>
                                                     @foreach($agent_sup as $agent)
-                                                        <option value="{{$agent->id}}" {{ $item->supervo_id($agent->id) ? 'selected' : '' }}>
+                                                        <option value="{{$agent->id}}" {{ in_array($agent->id, $item->supervo_ids->toArray()) ? 'selected' : '' }}>
                                                             {{$agent->nom}} {{$agent->prenom}} ({{$agent->role->nom}})
                                                         </option>
                                                     @endforeach
@@ -397,9 +374,9 @@
                     </tr>
                 @endforeach
             </tbody>
-
           </table>
         </div>
+        {{ $agents->links() }}
       </div>
     </div>
 

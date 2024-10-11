@@ -50,8 +50,9 @@ Route::middleware(['agent'])->group(function () {
         Route::get('user/delete/{user}', 'destroy')->name('user.delete');
         Route::get('user/blocked/{user}', 'blocked')->name('user.blocked');
         Route::get('user/role/show', 'showRoles')->name('role.select');
-        Route::get('user/{user?}/chiffre_affaire', 'chiffre_affaire')->name('user.chiffre_affaire');
-        Route::get('user/{user}/contrat', 'userContrat')->name('user.contrat');
+        Route::get('user/{user?}/profile', 'profile')->name('user.profile');
+        Route::get('user/{user?}/contrat', 'userContrat')->name('user.contrat');
+        Route::put('user/update/password', 'updatePassword')->name('user.update_password');
     });
 
     Route::controller(ContratController::class)->group(function () {

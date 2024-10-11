@@ -14,4 +14,9 @@ class Produit extends Model
     {
         return $this->belongsTo(Service::class);
     }
+
+    public function contrats()
+    {
+        return $this->hasMany(Contrat::class);
+    }
 }

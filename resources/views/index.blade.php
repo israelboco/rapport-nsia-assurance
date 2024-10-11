@@ -41,16 +41,18 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
-        <a class="nav-link" href="{{route('home')}}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-        </a>
-    </li>
+    @if($user->is_admin)
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+          <a class="nav-link" href="{{route('home')}}">
+              <i class="fas fa-fw fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+          </a>
+      </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+    @endif
 
   @if($user->is_admin)
     <!-- Heading -->
@@ -87,7 +89,7 @@
         <div id="collapsePages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{route('user.index')}}">Agent</a>
-                <a class="collapse-item" href="{{route('user.chiffre_affaire')}}">Profile</a>
+                <a class="collapse-item" href="{{route('user.profile', $user->id)}}">Profile</a>
             </div>
         </div>
     </li>
@@ -263,6 +265,7 @@
 
   <!-- Custom scripts for all pages-->
   <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </body>
 

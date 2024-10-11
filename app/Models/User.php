@@ -74,6 +74,14 @@ class User extends Authenticatable
                     ->whereDate('date_conclusion', $date)
                     ->sum('montant');
     }
+    
+
+    public function chiffreAffaires()
+    {
+        return $this->contrats()
+                    ->where('statut', 'à conclure')
+                    ->sum('montant');
+    }
 
     // public function tousLesSubordonnés()
     // {

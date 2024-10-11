@@ -10,7 +10,7 @@ class Contrat extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'nature', 'montant',
+        'user_id', 'produit_id', 'nature', 'montant',
         'prospect_nom', 'prospect_prenom',
         'prospect_telephone', 'prospect_email',
         'lieu_signature', 'statut', 'date_conclusion'
@@ -19,5 +19,10 @@ class Contrat extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function produit()
+    {
+        return $this->belongsTo(Produit::class);
     }
 }

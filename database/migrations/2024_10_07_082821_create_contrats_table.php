@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('contrats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Agent créateur
-            $table->string('nature');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
+            $table->foreignId('produit_id')->constrained()->onDelete('cascade'); 
+            $table->string('nature')->nullable();
             $table->decimal('montant', 15, 2);
             $table->string('prospect_nom');
             $table->string('prospect_prenom')->nullable();
