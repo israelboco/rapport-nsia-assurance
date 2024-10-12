@@ -18,7 +18,7 @@ Route::post('/check', [AuthController::class, 'check'])->name('auth.check');
 
 Route::middleware(['agent'])->group(function () {
        
-    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('dashboard');
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     
     Route::controller(ServiceController::class)->group(function () {
@@ -48,17 +48,19 @@ Route::middleware(['agent'])->group(function () {
         Route::post('user/create', 'store')->name('user.store');
         Route::put('user/update/{user}', 'update')->name('user.update');
         Route::get('user/delete/{user}', 'destroy')->name('user.delete');
+        Route::get('user/calcule/ca', 'calculeCa');
         Route::get('user/blocked/{user}', 'blocked')->name('user.blocked');
         Route::get('user/role/show', 'showRoles')->name('role.select');
-        Route::get('user/{user?}/profile', 'profile')->name('user.profile');
-        Route::get('user/{user?}/contrat', 'userContrat')->name('user.contrat');
-        Route::put('user/update/password', 'updatePassword')->name('user.update_password');
+        Route::get('user/{user?}/profile', 'profile')->name('user.profile')->middleware('access');
+        Route::get('user/{user?}/contrat', 'userContrat')->name('user.contrat')->middleware('access');
+        Route::put('user/update/password/{user}', 'updatePassword')->name('user.update_password');
+        Route::put('user/update/image/profile/{user}', 'updateProfile')->name('user.image_profile');
     });
 
     Route::controller(ContratController::class)->group(function () {
         Route::get('contrat/index', 'index')->name('contrat.index'); 
         Route::post('contrat/create', 'store')->name('contrat.store');
         Route::put('contrat/update/{contrat}', 'update')->name('contrat.update');
-        Route::get('contrat/delete/{contrat}', 'destroy')->name('contrat.delete');
+        Route::get('contrat/delete/{contrat}', 'destroy')->name('contrat.delete')->middleware('access');
     });
 });

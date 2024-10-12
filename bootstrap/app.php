@@ -14,6 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         $middleware->alias([
             'agent' => \App\Http\Middleware\AgentAccess::class,
+            'access' => \App\Http\Middleware\AccessMiddleware::class,
+            'dashboard' => \App\Http\Middleware\AccessDashboard::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

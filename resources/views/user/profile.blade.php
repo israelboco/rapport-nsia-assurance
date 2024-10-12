@@ -175,11 +175,20 @@
         </div>
         <script>
             function calculerChiffreAffaire() {
-                const montant = parseFloat(document.getElementById('montantInput').value) || 0;
-                const quantite = parseFloat(document.getElementById('quantiteInput').value) || 0;
-                const chiffreAffaire = montant * quantite;
-
-                document.getElementById('resultatInput').innerHTML = `${chiffreAffaire.toFixed(2)} <span>XOF</span>`;
+                const surbordonnes = document.getElementById('surbordonnes').value;
+                const dateInput = document.getElementById('dateInput').value;
+                let chiffreAffaire;
+                console.log(surbordonnes);
+                $.ajax({
+                    url: "{{ url('user/calcule/ca') }}" + "?user_id=" + '{{$profile->id}}' + "&datesearch=" + dateInput + "&sub=" + surbordonnes,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        chiffreAffaire = data;
+                        console.log(chiffreAffaire);
+                        document.getElementById('resultatInput').innerHTML = `${chiffreAffaire.toFixed(2)} <span>XOF</span>`;
+                    }
+                });
             }
         </script>
 
@@ -245,8 +254,8 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="date_naissance">Date de Naissance:</label>
-                                            <p id="date_naissance" class="font-weight-bold">{{ $profile->date_naissance }}</p>
+                                            <label for="date_naissance">Date de Naissance:</label> 
+                                            <p id="date_naissance" class="font-weight-bold">{{ \Carbon\Carbon::parse($profile->date_naissance)->format('d F Y') }}</p>
                                         </div>
                                     </div>
 
@@ -317,11 +326,15 @@
                         @method('put')
                         <div class="modal-body">
                             <div class="form-group">
-                                <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Mot de passe..." name="password" required>
+                                <input type="password" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer l'ancien Mot de passe..." name="old_password" required>
+                                <span class="text-danger small">@error('old_password'){{ $message }} @enderror</span>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Mot de passe..." name="password" required>
                                 <span class="text-danger small">@error('password'){{ $message }} @enderror</span>
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control form-control-user" id="password_confirmation" aria-describedby="emailHelp" placeholder="Confirmation mot de passe..." name="password_confirmation" required>
+                                <input type="password" class="form-control form-control-user" id="password_confirmation" aria-describedby="emailHelp" placeholder="Confirmation mot de passe..." name="password_confirmation" required>
                                 <span class="text-danger small">@error('password_confirmation'){{ $message }} @enderror</span>
                             </div>
                         </div>
@@ -333,6 +346,47 @@
                 </div>
             </div>
         @endif
+
+        @if($user->id == $profile->id)
+            <!-- Illustrations -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Modifier l'image de Profile</h6>
+                </div>
+                <div class="card-body">
+                    <form class="user" action="{{route('user.image_profile', $profile->id)}}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        @method('put')
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <img id="imagePreview" src="{{ asset($profile->profile) }}" alt="" class="img-profile rounded-circle img-fluid">
+                                </div>
+                            <div>
+                                <input type="file" id="url_profil" name="image" class="form-control-file">
+                            </div>
+                            <span class="text-danger small">@error('image'){{ $message }} @enderror</span>
+                        </div>
+                        <div class="modal-footer">
+                            <!-- <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button> -->
+                            <button type="submit" class="btn btn-primary">Modifier</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <script>
+                    document.getElementById('url_profil').addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                document.getElementById('imagePreview').src = e.target.result;
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+            </script>
+        @endif
+
 
         <!-- Approach -->
         <!-- <div class="card shadow mb-4">

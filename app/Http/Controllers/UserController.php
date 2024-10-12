@@ -21,6 +21,9 @@ class UserController extends Controller
     {
         $role_id = $request->query('role_id');
         $service_id = $request->query('service_id');
+        if ((!Auth::user()->is_admin) && isset($service_id) && (Auth::user()->service_id != $service_id)) {
+            return back()->with('error', 'Accès non autorisé.');
+        }
         $user = User::where('id', Auth::user()->id)->first();
         $select_service = Service::where('id', $service_id)->first();
         $select_role = Role::where('id', $role_id)->first();
@@ -49,7 +52,6 @@ class UserController extends Controller
             });
         }else{
             $services = Service::where('id', $user->service_id)->get();
-            // $roles = Role::where('service_id', $user->service_id)->get();
             $roles = Role::where('service_id', $user->service_id)
                         ->when($service_id, function ($query) use ($service_id) {
                                 return $query->where('service_id', $service_id);
@@ -78,7 +80,13 @@ class UserController extends Controller
         return view('user.index', compact(['user', 'services', 'roles', 'agents', 'agent_sup', 'select_service', 'select_role']));
     }
     
-    public function userContrat(User $profile) {
+    public function userContrat(User $user) {
+        $profile = $user;
+        if (!Auth::user()->is_admin && Auth::user()->id != $profile->id) {
+            $subordinates_id = Supervisor::where('supervisor_id', Auth::user()->id)->pluck('user_id');
+                if(!in_array(Auth::user()->id, $subordinates_id->toArray()))
+                    return back()->with('error', 'Accès non autorisé.');
+        }
         $user = User::where('id', Auth::user()->id)->first();
         $contrats = Contrat::where('user_id', $profile->id)->paginate(10);
         return view('user.contrat', compact('profile', 'user', 'contrats'));
@@ -87,6 +95,11 @@ class UserController extends Controller
 
     public function profile(User $user) {
         $profile = $user;
+        if ((!Auth::user()->is_admin) && (Auth::user()->id != $profile->id)) {
+            $subordinates_id = Supervisor::where('supervisor_id', Auth::user()->id)->pluck('user_id');
+                if(!in_array(Auth::user()->id, $subordinates_id->toArray()))
+                    return back()->with('error', 'Accès non autorisé.');
+        }
         $user = User::where('id', Auth::user()->id)->first();
         $chiffre_affaire = $profile->chiffreAffaires();
         $subordinates_count = Supervisor::where('supervisor_id', $profile->id)->count();
@@ -137,6 +150,34 @@ class UserController extends Controller
         return view('actions.index', compact('actions'));
     }
 
+    public function calculeCa(Request $request)
+    {
+        $datesearch = $request->query('datesearch');
+        $user_id = $request->query('user_id');
+        $sub = $request->query('sub');
+        $user = User::where('id', $user_id)->first();
+        if (request()->ajax()) {
+            if(isset($datesearch)){
+                if(isset($sub)){
+
+                }
+                else{
+
+                }
+            }
+            if(isset($sub)){
+                if(isset($datesearch)){
+
+                }
+                else{
+
+                }
+            }
+            $ca = 0;
+            return response()->json($ca); 
+        }
+    }
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -291,14 +332,36 @@ class UserController extends Controller
     public function updatePassword(Request $request, User $user)
     {
         $validation = $request->validate([
+            'old_password' => 'required',
             'password' => 'required|confirmed|min:6',
         ]);
 
-        $user->update([
-            'password' => $request->password,
-        ]);
+        if(!Hash::check($request->old_password, $user->password)){
+            flash()->error('Ancien mot de passe incorrect.');
+            return back();
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
 
         flash()->success('Mot de passe Agent modifier avec succès');
+
+        return back();
+    }
+
+    public function updateProfile(Request $request, User $user)
+    {
+        $validation = $request->validate([
+            'image' => 'required|image',
+        ]);
+        $image_url = time() . '-' . $request->image->getClientOriginalName();
+        $path = $request->image->move(public_path('profile'), $image_url);
+        $path = "profile/" . $image_url;
+
+        $user->profile = $path;
+        $user->save();
+
+        flash()->success('L\'image profile de Agent modifier avec succès');
 
         return back();
     }

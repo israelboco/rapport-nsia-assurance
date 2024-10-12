@@ -20,7 +20,9 @@ class ContratController extends Controller
     {
         $role_id = $request->query('role_id');
         $service_id = $request->query('service_id');
-        $service_id = $request->query('service_id');
+        if ((!Auth::user()->is_admin) && isset($service_id) && (Auth::user()->service_id != $service_id)) {
+            return back()->with('error', 'Accès non autorisé.');
+        }
         $statut = $request->query('statut');
         $date = $request->query('date');
         $user = User::where('id', Auth::user()->id)->first();
