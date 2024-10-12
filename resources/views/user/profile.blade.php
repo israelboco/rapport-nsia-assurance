@@ -186,7 +186,7 @@
                     success: function(data) {
                         chiffreAffaire = data;
                         console.log(chiffreAffaire);
-                        document.getElementById('resultatInput').innerHTML = `${chiffreAffaire.toFixed(2)} <span>XOF</span>`;
+                        document.getElementById('resultatInput').innerHTML = `${chiffreAffaire} <span>XOF</span>`;
                     }
                 });
             }

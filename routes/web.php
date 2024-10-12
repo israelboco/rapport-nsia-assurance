@@ -51,6 +51,7 @@ Route::middleware(['agent'])->group(function () {
         Route::get('user/calcule/ca', 'calculeCa');
         Route::get('user/blocked/{user}', 'blocked')->name('user.blocked');
         Route::get('user/role/show', 'showRoles')->name('role.select');
+        Route::get('user/search', 'index')->name('user.search');
         Route::get('user/{user?}/profile', 'profile')->name('user.profile')->middleware('access');
         Route::get('user/{user?}/contrat', 'userContrat')->name('user.contrat')->middleware('access');
         Route::put('user/update/password/{user}', 'updatePassword')->name('user.update_password');

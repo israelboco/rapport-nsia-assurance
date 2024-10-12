@@ -9,6 +9,7 @@ use App\Models\Supervisor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,6 +22,7 @@ class UserController extends Controller
     {
         $role_id = $request->query('role_id');
         $service_id = $request->query('service_id');
+        $search = $request->query('search');
         if ((!Auth::user()->is_admin) && isset($service_id) && (Auth::user()->service_id != $service_id)) {
             return back()->with('error', 'Accès non autorisé.');
         }
@@ -43,6 +45,15 @@ class UserController extends Controller
                         })
                         ->when($role_id, function ($query) use ($role_id) {
                             return $query->where('role_id', $role_id);
+                        })
+                        ->when($search, function ($query) use ($search) {
+                            return $query->where(function ($query) use ($search) {
+                                $search = strtolower($search);
+                                return $query->where(DB::raw('lower(nom)'), 'like', "%$search%")
+                                    ->orWhere(DB::raw('lower(prenom)'), 'like', "%$search%")
+                                    ->orWhere(DB::raw('lower(domicile)'), 'like', "%$search%");
+                                    // ->orWhere(DB::raw('lower(equipements)'), 'like', "%$search%");
+                            });
                         })
                         ->orderByDesc('id')->paginate(10);
         
@@ -157,23 +168,17 @@ class UserController extends Controller
         $sub = $request->query('sub');
         $user = User::where('id', $user_id)->first();
         if (request()->ajax()) {
-            if(isset($datesearch)){
-                if(isset($sub)){
+            $subordinates_id = Supervisor::where('supervisor_id', $user->id)->pluck('user_id');
+            $ca = Contrat::where('user_id', $user_id)
+                            ->where('statut', 'à conclure')
+                            ->when($datesearch, function ($query) use ($datesearch) {
+                                return $query->where('date_conclusion', $datesearch);
+                            })
+                            ->when($sub, function ($query) use ($subordinates_id) {
+                                return $query->whereIn('user_id', $subordinates_id);
+                            })
+                            ->sum('montant');
 
-                }
-                else{
-
-                }
-            }
-            if(isset($sub)){
-                if(isset($datesearch)){
-
-                }
-                else{
-
-                }
-            }
-            $ca = 0;
             return response()->json($ca); 
         }
     }
