@@ -86,7 +86,7 @@
             <i class="fas fa-fw fa-user"></i>
             <span>Agents</span>
         </a>
-        <div id="collapsePages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{route('user.index')}}">Agent</a>
                 <a class="collapse-item" href="{{route('user.profile', $user->id)}}">Profile</a>

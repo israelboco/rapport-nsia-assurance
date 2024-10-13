@@ -81,6 +81,15 @@ class UserController extends Controller
                             ->when($role_id, function ($query) use ($role_id) {
                                 return $query->where('role_id', $role_id);
                             })
+                            ->when($search, function ($query) use ($search) {
+                                return $query->where(function ($query) use ($search) {
+                                    $search = strtolower($search);
+                                    return $query->where(DB::raw('lower(nom)'), 'like', "%$search%")
+                                        ->orWhere(DB::raw('lower(prenom)'), 'like', "%$search%")
+                                        ->orWhere(DB::raw('lower(domicile)'), 'like', "%$search%");
+                                        // ->orWhere(DB::raw('lower(equipements)'), 'like', "%$search%");
+                                });
+                            })
                         ->orderByDesc('id')->paginate(10);
 
             $agents->getCollection()->transform(function($query){
@@ -168,13 +177,16 @@ class UserController extends Controller
         $sub = $request->query('sub');
         $user = User::where('id', $user_id)->first();
         if (request()->ajax()) {
-            $subordinates_id = Supervisor::where('supervisor_id', $user->id)->pluck('user_id');
+            $subordinates_id = null;
+            if($sub == 'true'){
+                $subordinates_id = Supervisor::where('supervisor_id', $user->id)->pluck('user_id');
+            }
             $ca = Contrat::where('user_id', $user_id)
                             ->where('statut', 'à conclure')
                             ->when($datesearch, function ($query) use ($datesearch) {
                                 return $query->where('date_conclusion', $datesearch);
                             })
-                            ->when($sub, function ($query) use ($subordinates_id) {
+                            ->when($subordinates_id, function ($query) use ($subordinates_id) {
                                 return $query->whereIn('user_id', $subordinates_id);
                             })
                             ->sum('montant');

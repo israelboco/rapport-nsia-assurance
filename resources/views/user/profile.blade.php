@@ -142,7 +142,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="surbordonnes">
+                                        <input class="form-check-input" type="checkbox" value="option1" id="surbordonnes">
                                         <label class="form-check-label" for="surbordonnes">
                                             Surbordonnées
                                         </label>
@@ -175,9 +175,10 @@
         </div>
         <script>
             function calculerChiffreAffaire() {
-                const surbordonnes = document.getElementById('surbordonnes').value;
+                const surbordonnes = document.getElementById('surbordonnes').checked;
                 const dateInput = document.getElementById('dateInput').value;
                 let chiffreAffaire;
+                console.log(document.getElementById('surbordonnes'));
                 console.log(surbordonnes);
                 $.ajax({
                     url: "{{ url('user/calcule/ca') }}" + "?user_id=" + '{{$profile->id}}' + "&datesearch=" + dateInput + "&sub=" + surbordonnes,
