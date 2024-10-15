@@ -16,10 +16,10 @@ class ProduitController extends Controller
     public function index(string $serviceId)
     {
         $user = Auth::user();
-        $services = Service::all();
+        $services = Service::where('remove', false)->get();
 
         if (request()->ajax()) {
-            $produits = Produit::where('service_id', $serviceId)->get();
+            $produits = Produit::where('remove', false)->where('service_id', $serviceId)->get();
             $produits->transform(function($query){
                 $query->service = Service::where('id', $query->service_id)->first();
                 return $query;
@@ -106,7 +106,7 @@ class ProduitController extends Controller
             'service_id' => $request->service_id
         ]);
 
-        flash()->success('Produit modifier avec succès');
+        flash()->success('Produit modifié avec succès');
 
         return back();
     }
@@ -116,7 +116,8 @@ class ProduitController extends Controller
      */
     public function destroy(Produit $produit)
     {
-        $produit->delete();
+        $produit->remove = true;
+        $produit->save();
 
         flash()->success('Produit supprimer avec succès');
 

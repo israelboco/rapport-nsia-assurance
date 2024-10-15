@@ -29,12 +29,13 @@ class ContratController extends Controller
         $select_service = Service::where('id', $service_id)->first();
         $select_role = Role::where('id', $role_id)->first();
         if($user->is_admin){
-            $services = Service::all();
+            $services = Service::where('remove', false)->get();
             $roles = Role::when($service_id, function ($query) use ($service_id) {
                 return $query->where('service_id', $service_id);
-            })->get(); 
-            $produits = Produit::all();
-            $agent_ids = User::when($service_id, function ($query) use ($service_id) {
+            })->where('remove', false)->get(); 
+            $produits = Produit::where('remove', false)->get();
+            $agent_ids = User::where('remove', false)
+                ->when($service_id, function ($query) use ($service_id) {
                 return $query->where('service_id', $service_id);
                 })
                 ->when($role_id, function ($query) use ($role_id) {
@@ -48,12 +49,14 @@ class ContratController extends Controller
         }else{
             $services = Service::where('id', $user->service_id)->get();
             $roles = Role::where('service_id', $user->service_id)
+                        ->where('remove', false)
                         ->when($service_id, function ($query) use ($service_id) {
                             return $query->where('service_id', $service_id);
                         })->get();
             $produits = Produit::where('service_id', $user->service_id)->get();
             $subordinate_ids = Supervisor::where('supervisor_id', $user->id)->pluck('user_id');
             $agent_ids = User::whereIn('id', $subordinate_ids)
+                            ->where('remove', false)
                             ->when($service_id, function ($query) use ($service_id) {
                             return $query->where('service_id', $service_id);
                             })
@@ -66,7 +69,7 @@ class ContratController extends Controller
                             ->pluck('id');
         }
 
-        $contrats = Contrat::whereIn('user_id', $agent_ids)->paginate(10);
+        $contrats = Contrat::where('remove', false)->whereIn('user_id', $agent_ids)->paginate(10);
 
         return view('contrat.index', compact(['user', 'contrats', 'produits', 'services', 'roles', 'select_service', 'select_role', 'statut', 'date']));
     }
@@ -165,7 +168,7 @@ class ContratController extends Controller
             'date_conclusion' => $request->date_conclusion,
         ]);
 
-        flash()->success('Contrat modifier avec succès');
+        flash()->success('Contrat modifié avec succès');
 
         return back();
     }
@@ -175,7 +178,8 @@ class ContratController extends Controller
      */
     public function destroy(Contrat $contrat)
     {
-        $contrat->delete();
+        $contrat->remove = true;
+        $contrat->save();
 
         flash()->success('Contrat supprimer avec succès');
 

@@ -16,10 +16,10 @@ class RoleController extends Controller
     public function index(string $serviceId)
     {
         $user = Auth::user();
-        $services = Service::all();
+        $services = Service::where('remove', false)->get();
 
         if (request()->ajax()) {
-            $roles = Role::where('service_id', $serviceId)->get();
+            $roles = Role::where('remove', false)->where('service_id', $serviceId)->get();
             $roles->transform(function($query){
                 $query->service = Service::where('id', $query->service_id)->first();
                 return $query;
@@ -33,7 +33,7 @@ class RoleController extends Controller
 
     public function showServices() {
         $user = Auth::user();
-        $services = Service::all();
+        $services = Service::where('remove', false)->get();
         $selectedService = Service::find(session('selected_service_id'));
         if (request()->ajax()) {
             if(!$user->is_admin){
@@ -75,7 +75,7 @@ class RoleController extends Controller
         }
 
         $niveau = $request->niveau;
-        $exist = Role::where('niveau', $request->niveau)->first();
+        $exist = Role::where('remove', false)->where('niveau', $request->niveau)->first();
         if($exist){
             $actuel = Role::count();
             $exist->niveau = $actuel + 1;
@@ -128,7 +128,7 @@ class RoleController extends Controller
 
 
         $niveau = $request->niveau;
-        $exist = Role::where('niveau', $request->niveau)->first();
+        $exist = Role::where('remove', false)->where('niveau', $request->niveau)->first();
         if($exist && $exist->id != $role->id){
             $exist->niveau = $role->niveau;
             $exist->save();
@@ -139,7 +139,7 @@ class RoleController extends Controller
             'service_id' => $request->service_id
         ]);
 
-        flash()->success('Role modifier avec succès');
+        flash()->success('Role modifié avec succès');
 
         return back();
     }
@@ -149,7 +149,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        $role->delete();
+        $role->remove = true;
+        $role->save();
 
         flash()->success('Role supprimer avec succès');
 

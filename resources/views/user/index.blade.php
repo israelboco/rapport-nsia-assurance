@@ -76,7 +76,7 @@
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
               <tr>
-                <th>Profile</th>
+                <th>Profil</th>
                 <th>Nom et Prenom</th>
                 <th>Code</th>
                 <th>Email</th>
@@ -189,7 +189,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Entrer le Email..." name="email" required value="{{$item->email}}">
+                                                        <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Entrer l' Email..." name="email" required value="{{$item->email}}">
                                                         <span class="text-danger small">@error('email'){{ $message }} @enderror</span>
                                                     </div>
                                                 </div>
@@ -237,7 +237,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Banque..." name="banque" value="{{$item->banque}}">
+                                                        <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer la Banque..." name="banque" value="{{$item->banque}}">
                                                         <span class="text-danger small">@error('banque'){{ $message }} @enderror</span>
                                                     </div>
                                                 </div>
@@ -245,7 +245,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <input type="number" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le IFU..." name="ifu" value="{{$item->ifu}}">
+                                                        <input type="number" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer l' IFU..." name="ifu" value="{{$item->ifu}}">
                                                         <span class="text-danger small">@error('ifu'){{ $message }} @enderror</span>
                                                     </div>
                                                 </div>
@@ -419,7 +419,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Entrer le Email..." name="email" required>
+                                <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Entrer l' Email..." name="email" required>
                                 <span class="text-danger small">@error('email'){{ $message }} @enderror</span>
                             </div>
                         </div>
@@ -467,7 +467,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Banque..." name="banque" required>
+                                <input type="text" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer la Banque..." name="banque" required>
                                 <span class="text-danger small">@error('banque'){{ $message }} @enderror</span>
                             </div>
                         </div>
@@ -475,7 +475,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="number" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le IFU..." name="ifu">
+                                <input type="number" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer l' IFU..." name="ifu">
                                 <span class="text-danger small">@error('ifu'){{ $message }} @enderror</span>
                             </div>
                         </div>

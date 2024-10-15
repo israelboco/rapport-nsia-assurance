@@ -102,7 +102,7 @@ class AuthController extends Controller
         $user = User::find($id);
         $user->password = Hash::make($request->password);
         $user->save();
-        return redirect()->route('auth.login')->with('success', "Mot de passe modifier avec succès !");
+        return redirect()->route('auth.login')->with('success', "Mot de passe modifié avec succès !");
     
     }
 

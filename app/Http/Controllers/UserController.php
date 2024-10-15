@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contrat;
 use App\Models\Role;
 use App\Models\Service;
+use App\Models\Produit;
 use App\Models\Supervisor;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,18 +31,21 @@ class UserController extends Controller
         $select_service = Service::where('id', $service_id)->first();
         $select_role = Role::where('id', $role_id)->first();
         if($user->is_admin){
-            $services = Service::all();
-            $roles = Role::when($service_id, function ($query) use ($service_id) {
-                return $query->where('service_id', $service_id);
-            })->get(); 
+            $services = Service::where('remove', false)->get();
+            $roles = Role::where('remove', false)
+                    ->when($service_id, function ($query) use ($service_id) {
+                        return $query->where('service_id', $service_id);
+                    })->get(); 
             $agent_sup_id = Supervisor::select('supervisor_id')->distinct()->pluck('supervisor_id'); 
             $agent_sup = User::whereIn('id', $agent_sup_id)
+                            ->where('remove', false)
                             ->orWhere('role_id', '<=', 5)
                             ->distinct()
                             ->get();
             
-            $agents = User::when($service_id, function ($query) use ($service_id) {
-                        return $query->where('service_id', $service_id);
+            $agents = User::where('remove', false)
+                        ->when($service_id, function ($query) use ($service_id) {
+                            return $query->where('service_id', $service_id);
                         })
                         ->when($role_id, function ($query) use ($role_id) {
                             return $query->where('role_id', $role_id);
@@ -63,18 +67,20 @@ class UserController extends Controller
             });
         }else{
             $services = Service::where('id', $user->service_id)->get();
-            $roles = Role::where('service_id', $user->service_id)
+            $roles = Role::where('remove', false)->where('service_id', $user->service_id)
                         ->when($service_id, function ($query) use ($service_id) {
                                 return $query->where('service_id', $service_id);
                             })->get();
             $agent_sup_id = Supervisor::select('supervisor_id')->distinct()->pluck('supervisor_id');
             $agent_sup = User::whereIn('id', $agent_sup_id)
+                            ->where('remove', false)
                             ->orwhere('role_id', '<=', $user->role_id)
                             ->distinct()
                             ->get();
 
             $subordinate_ids = Supervisor::where('supervisor_id', $user->id)->pluck('user_id');
             $agents = User::whereIn('id', $subordinate_ids)
+                            ->where('remove', false)
                             ->when($service_id, function ($query) use ($service_id) {
                                 return $query->where('service_id', $service_id);
                             })
@@ -107,9 +113,16 @@ class UserController extends Controller
                 if(!in_array(Auth::user()->id, $subordinates_id->toArray()))
                     return back()->with('error', 'Accès non autorisé.');
         }
+        if($user->is_amdin){
+            $produits = Produit::where('remove', false)->get();
+        }
+        {
+            $produits = Produit::where('service_id', $user->service->id)
+                        ->where('remove', false)->get();
+        }
         $user = User::where('id', Auth::user()->id)->first();
-        $contrats = Contrat::where('user_id', $profile->id)->paginate(10);
-        return view('user.contrat', compact('profile', 'user', 'contrats'));
+        $contrats = Contrat::where('remove', false)->where('user_id', $profile->id)->paginate(10);
+        return view('user.contrat', compact('profile', 'user', 'contrats', 'produits'));
     }
 
 
@@ -124,15 +137,16 @@ class UserController extends Controller
         $chiffre_affaire = $profile->chiffreAffaires();
         $subordinates_count = Supervisor::where('supervisor_id', $profile->id)->count();
         $subordinates_id = Supervisor::where('supervisor_id', $profile->id)->pluck('user_id');
-        $total_user_service_id = User::where('service_id', $profile->service_id)->pluck('id');
-        $total_contrat = Contrat::whereIn('user_id', $total_user_service_id)->count();
-        $total_contrat = Contrat::whereIn('user_id', $total_user_service_id)->count();
+        $total_user_service_id = User::where('remove', false)->where('service_id', $profile->service_id)->pluck('id');
+        $total_contrat = Contrat::where('remove', false)->whereIn('user_id', $total_user_service_id)->count();
+        // $total_contrat = Contrat::whereIn('user_id', $total_user_service_id)->count();
         $contrat_encours = Contrat::whereIn('user_id', $subordinates_id)->where('statut', 'en cours')->count();
 
-        $pourcental_contrat = ($profile->contrats()->count() / $total_contrat) * 100;
+        $pourcental_contrat = isset($total_contrat) ? ($profile->contrats()->count() / $total_contrat) * 100 : 0;
 
         $agent_sup_id = Supervisor::select('supervisor_id')->distinct()->pluck('supervisor_id');
             $agent_sup = User::whereIn('id', $agent_sup_id)
+                            ->where('remove', false)
                             ->orwhere('role_id', '<=', $profile->role_id)
                             ->distinct()
                             ->get();
@@ -144,11 +158,11 @@ class UserController extends Controller
         $roles = Role::all();
         
         if (request()->ajax()) {
-            if($user->is_admin){
-                $roles = Role::where('service_id', $user->service_id)->get();
+            if(!$user->is_admin){
+                $roles = Role::where('remove', false)->where('service_id', $user->service_id)->get();
             }
             else{
-                $roles = Role::all();
+                $roles = Role::where('remove', false)->get();
             }
             return response()->json($roles); 
         }
@@ -182,6 +196,7 @@ class UserController extends Controller
                 $subordinates_id = Supervisor::where('supervisor_id', $user->id)->pluck('user_id');
             }
             $ca = Contrat::where('user_id', $user_id)
+                            ->where('remove', false)
                             ->where('statut', 'à conclure')
                             ->when($datesearch, function ($query) use ($datesearch) {
                                 return $query->where('date_conclusion', $datesearch);
@@ -341,7 +356,7 @@ class UserController extends Controller
             }
         }
 
-        flash()->success('Agent modifier avec succès');
+        flash()->success('Agent modifié avec succès');
 
         return back();
     }
@@ -361,7 +376,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        flash()->success('Mot de passe Agent modifier avec succès');
+        flash()->success('Mot de passe Agent modifié avec succès');
 
         return back();
     }
@@ -378,7 +393,7 @@ class UserController extends Controller
         $user->profile = $path;
         $user->save();
 
-        flash()->success('L\'image profile de Agent modifier avec succès');
+        flash()->success('L\'image profile de Agent modifié avec succès');
 
         return back();
     }
@@ -388,7 +403,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        $user->remove = true;
+        $user->email = $user->email . now();
+        $user->save();
 
         flash()->success('Agent supprimer avec succès');
 

@@ -18,7 +18,7 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        $products = Produit::with('contrats')
+        $products = Produit::where('remove', false)->with('contrats')
                 ->whereHas('contrats', function($query) {
                     $query->where('statut', 'à conclure')
                         ->groupBy('produit_id')  // Group by produit_id
@@ -39,11 +39,13 @@ class HomeController extends Controller
             ];
         });
 
-        $agent_count = User::count();
-        $agent_id = User::pluck('id');
+        $agent_count = User::where('remove', false)->count();
+        $agent_id = User::where('remove', false)->pluck('id');
         $chiffre_affaire = Contrat::whereIn('user_id', $agent_id)
+                            ->where('remove', false)
                             ->where('statut', 'à conclure')->sum('montant');
         $contrat_count = Contrat::whereIn('user_id', $agent_id)
+                            ->where('remove', false)
                             ->where('statut', 'à conclure')->count();
         $contrat_encours = Contrat::whereIn('user_id', $agent_id)
                             ->where('statut', 'en cours')->sum('montant');
@@ -52,6 +54,7 @@ class HomeController extends Controller
         $month = [1, 2, 3, 4, 5, 6, 7, 8 , 9, 10, 11, 12];
         foreach($month as $i){
             $ca = Contrat::whereIn('user_id', $agent_id)
+                            ->where('remove', false)
                             ->where('statut', 'à conclure')
                             ->whereYear('created_at', date('Y'))
                             ->whereMonth('created_at', $i)

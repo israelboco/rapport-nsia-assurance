@@ -15,7 +15,7 @@ class ServiceController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $services = Service::all();
+        $services = Service::where('remove', false)->get();
         return view('service.index', compact(['user', 'services']));
     }
 
@@ -84,7 +84,7 @@ class ServiceController extends Controller
         $service->nom = $request->nom;
         $service->save();
 
-        flash()->success('Service modifier avec succès');
+        flash()->success('Service modifié avec succès');
 
         return back();
     }
@@ -94,7 +94,8 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
     {
-        $service->delete();
+        $service->remove = true;
+        $service->save();
 
         flash()->success('Service supprimer avec succès');
 

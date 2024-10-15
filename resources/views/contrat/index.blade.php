@@ -165,12 +165,12 @@
                             </nav>
                         </td>
 
-                        <!-- ModifierService Modal-->
+                        <!-- ModifierContrat Modal-->
                         <div class="modal fade" id="updateContratModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="updateContratModalLabel{{ $item->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="updateContratModalLabel{{ $item->id }}">Modifier le service</h5>
+                                        <h5 class="modal-title" id="updateContratModalLabel{{ $item->id }}">Modifier le contrat</h5>
                                         <button class="close" type="button" e-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">×</span>
                                         </button>
@@ -275,12 +275,12 @@
                             </div>
                         </div>
 
-                        <!-- Delete Service Modal-->
+                        <!-- Delete Contrat Modal-->
                         <!-- <div class="modal fade" id="deleteContratModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteContratModalLabel{{ $item->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteContratModalLabel{{ $item->id }}">Voulez-vous supprimer le service?</h5>
+                                        <h5 class="modal-title" id="deleteContratModalLabel{{ $item->id }}">Voulez-vous supprimer le contart?</h5>
                                         <button class="close" type="button" e-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">×</span>
                                         </button>
@@ -310,7 +310,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Enregistrer un nouveau service</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Enregistrer un nouveau contrat</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>

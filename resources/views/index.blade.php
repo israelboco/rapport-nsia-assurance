@@ -89,7 +89,7 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{route('user.index')}}">Agent</a>
-                <a class="collapse-item" href="{{route('user.profile', $user->id)}}">Profile</a>
+                <a class="collapse-item" href="{{route('user.profile', $user->id)}}">Profil</a>
             </div>
         </div>
     </li>
@@ -191,7 +191,7 @@
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="{{route('user.profile', $user->id)}}">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
+                  Profil
                 </a>
                 <!-- <a class="dropdown-item" href="#">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
