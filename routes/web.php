@@ -56,6 +56,7 @@ Route::middleware(['agent'])->group(function () {
         Route::get('user/{user?}/deal', 'userDeal')->name('user.deal')->middleware('access');
         Route::put('user/update/password/{user}', 'updatePassword')->name('user.update_password');
         Route::put('user/update/image/profile/{user}', 'updateProfile')->name('user.image_profile');
+        Route::get('users/export', 'export');
     });
 
     Route::controller(DealController::class)->group(function () {

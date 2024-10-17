@@ -12,6 +12,7 @@ class Contrat extends Model
     protected $fillable = [
         'user_id', 
         'produit_id', 
+        'produit_code', 
         'Police',
         'N_Quittance',
         'N_Quittance_Annulee',
