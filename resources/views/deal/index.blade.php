@@ -6,7 +6,7 @@
   <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Contrat</h1>
+    <h1 class="h3 mb-2 text-gray-800">Deal</h1>
 
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
         <div class="col-12 col-md-auto">
@@ -19,7 +19,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             @foreach($services as $item)
-                                <a class="dropdown-item" href="{{ $select_role ? url('contrat/index?service_id='.$item->id.'&role_id='.$select_role->id) : url('contrat/index?service_id='.$item->id.'&role_id=') }}" onclick="updateSelectedService('{{ $item->nom }}', '{{ $item->id }}')">{{ $item->nom }}</a>
+                                <a class="dropdown-item" href="{{ $select_role ? url('deal/index?service_id='.$item->id.'&role_id='.$select_role->id) : url('deal/index?service_id='.$item->id.'&role_id=') }}" onclick="updateSelectedService('{{ $item->nom }}', '{{ $item->id }}')">{{ $item->nom }}</a>
                             @endforeach
                         </div>
                     </li>
@@ -36,7 +36,7 @@
                         </a>
                         <div id="rolesSelect" class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             @foreach($roles as $item)
-                                <a class="dropdown-item" href="{{$select_service ? url('contrat/index?service_id='.$select_service->id.'&role_id='.$item->id) : url('contrat/index?service_id=&role_id='.$item->id)}}" onclick="updateSelectedRole('{{ $item->nom }}', '{{ $item->id }}')">{{ $item->nom }}</a>
+                                <a class="dropdown-item" href="{{$select_service ? url('deal/index?service_id='.$select_service->id.'&role_id='.$item->id) : url('deal/index?service_id=&role_id='.$item->id)}}" onclick="updateSelectedRole('{{ $item->nom }}', '{{ $item->id }}')">{{ $item->nom }}</a>
                             @endforeach
                         </div>
                     </li>
@@ -52,9 +52,9 @@
                             <span id="selectedStatut">{{ $statut ? $statut : 'Selectionner Statut'}}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ url('contrat/index?service_id=' . ($select_service ? $select_service->id : '') . '&role_id=' . ($select_role ? $select_role->id : '') . '&statut=' . 'en attente') }}">En attente</a>
-                            <a class="dropdown-item" href="{{url('contrat/index?service_id='. ($select_service ? $select_service->id : '') .'&role_id='. ($select_role ? $select_role->id : '') .'&statut='. 'à conclure')}}">A Conclure</a>
-                            <a class="dropdown-item" href="{{url('contrat/index?service_id='. ($select_service ? $select_service->id : '') .'&role_id='. ($select_role ? $select_role->id : '') .'&statut='. 'annuler')}}">Annuler</a>
+                            <a class="dropdown-item" href="{{ url('deal/index?service_id=' . ($select_service ? $select_service->id : '') . '&role_id=' . ($select_role ? $select_role->id : '') . '&statut=' . 'en attente') }}">En attente</a>
+                            <a class="dropdown-item" href="{{url('deal/index?service_id='. ($select_service ? $select_service->id : '') .'&role_id='. ($select_role ? $select_role->id : '') .'&statut='. 'à conclure')}}">A Conclure</a>
+                            <a class="dropdown-item" href="{{url('deal/index?service_id='. ($select_service ? $select_service->id : '') .'&role_id='. ($select_role ? $select_role->id : '') .'&statut='. 'annuler')}}">Annuler</a>
                         </div>
                     </li>
                 </ul>
@@ -70,7 +70,7 @@
                         </a>
                         <div id="dateSelect" class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <div>
-                                <a class="dropdown-item" id="dynamic-link" href="{{url('contrat/index?service_id='. ($select_service ? $select_service->id : '') .'&role_id='. ($select_role ? $select_role->id : '') .'&statut='.( $statut ? $statut : '') . '&date=')}}">
+                                <a class="dropdown-item" id="dynamic-link" href="{{url('deal/index?service_id='. ($select_service ? $select_service->id : '') .'&role_id='. ($select_role ? $select_role->id : '') .'&statut='.( $statut ? $statut : '') . '&date=')}}">
                                     <input type="date" class="form-control" id="date-input" placeholder="Entrer la date">
                                     <!-- <span id="datelabel"></span> -->
                                 </a>
@@ -82,7 +82,7 @@
         </div>
         <!-- Bouton à droite -->
         <div class="col-12 col-md-auto">
-            <a href="#" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#addContratModal">
+            <a href="#" class="btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#adddealModal">
                 <i class="fas fa-plus fa-sm text-white-50"></i> Ajouter
             </a>
         </div>
@@ -93,7 +93,7 @@
         document.getElementById('date-input').addEventListener('change', function() {
             const selectedDate = this.value;
             const link = document.getElementById('dynamic-link');
-            link.href = "{{ url('contrat/index?service_id='. ($select_service ? $select_service->id : '') .'&role_id='. ($select_role ? $select_role->id : '') .'&statut='. ($statut ? $statut : '')) . '&date=' }}" + selectedDate;
+            link.href = "{{ url('deal/index?service_id='. ($select_service ? $select_service->id : '') .'&role_id='. ($select_role ? $select_role->id : '') .'&statut='. ($statut ? $statut : '')) . '&date=' }}" + selectedDate;
 
             // document.getElementById('datelabel').textContent = selectedDate;
             document.getElementById('selectedDateLabel').textContent = selectedDate;
@@ -107,7 +107,7 @@
     <!-- eTales Example -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Contrat</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Deals</h6>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -126,7 +126,7 @@
               </tr>
             </thead>
             <tbody>
-                @foreach($contrats as $item)
+                @foreach($deals as $item)
                     <tr>
                         <td>{{ $item->prospect_nom }} {{ $item->prospect_prenom }}</td>
                         <td>{{ $item->prospect_email }}</td>
@@ -145,7 +145,7 @@
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
                                             <!-- Update -->
-                                            <a href="#" class="dropdown-item d-flex align-items-center" e-toggle="modal" e-target="#updateContratModal{{ $item->id }}">
+                                            <a href="#" class="dropdown-item d-flex align-items-center" e-toggle="modal" e-target="#updatedealModal{{ $item->id }}">
                                                 <button class="btn btn-warning btn-circle btn-sm">
                                                     <i class="fas fa-sync-alt"></i>
                                                 </button>
@@ -153,7 +153,7 @@
                                             </a>
                                             <!-- <div class="dropdown-divider"></div> -->
                                             <!-- Delete -->
-                                            <!-- <a href="#" class="dropdown-item d-flex align-items-center" e-toggle="modal" e-target="#deleteContratModal{{$item->id}}">
+                                            <!-- <a href="#" class="dropdown-item d-flex align-items-center" e-toggle="modal" e-target="#deletedealModal{{$item->id}}">
                                                 <button class="btn btn-danger btn-circle btn-sm">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -165,17 +165,17 @@
                             </nav>
                         </td>
 
-                        <!-- ModifierContrat Modal-->
-                        <div class="modal fade" id="updateContratModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="updateContratModalLabel{{ $item->id }}" aria-hidden="true">
+                        <!-- Modifierdeal Modal-->
+                        <div class="modal fade" id="updatedealModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="updatedealModalLabel{{ $item->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="updateContratModalLabel{{ $item->id }}">Modifier le contrat</h5>
+                                        <h5 class="modal-title" id="updatedealModalLabel{{ $item->id }}">Modifier le deal</h5>
                                         <button class="close" type="button" e-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">×</span>
                                         </button>
                                     </div>
-                                    <form class="user" action="{{ route('contrat.update', $item->id) }}" method="post" enctype="multipart/form-e">
+                                    <form class="user" action="{{ route('deal.update', $item->id) }}" method="post" enctype="multipart/form-e">
                                         @csrf
                                         @method('put')
                                         <div class="modal-body">
@@ -249,7 +249,7 @@
                                                     <div class="form-group">
                                                         <label for="statut">Sélectionner : l'Etat</label>
                                                         <select name="statut" id="statut" class="form-control" required>
-                                                            <option value="" disabled selected>Statut Contrat</option>
+                                                            <option value="" disabled selected>Statut deal</option>
                                                                 <option value="en attente" {{$item->statut == 'en attente' ? 'selected' : ''}}>En attente</option>
                                                                 <option value="à conclure" {{$item->statut == 'à conclure' ? 'selected' : ''}}>A conclure</option>
                                                                 <option value="annuler" {{$item->statut == 'annuler' ? 'selected' : ''}}>Annuler</option>
@@ -275,20 +275,20 @@
                             </div>
                         </div>
 
-                        <!-- Delete Contrat Modal-->
-                        <!-- <div class="modal fade" id="deleteContratModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteContratModalLabel{{ $item->id }}" aria-hidden="true">
+                        <!-- Delete deal Modal-->
+                        <!-- <div class="modal fade" id="deletedealModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="deletedealModalLabel{{ $item->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteContratModalLabel{{ $item->id }}">Voulez-vous supprimer le contart?</h5>
+                                        <h5 class="modal-title" id="deletedealModalLabel{{ $item->id }}">Voulez-vous supprimer le contart?</h5>
                                         <button class="close" type="button" e-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">×</span>
                                         </button>
                                     </div>
-                                    <div class="modal-body">Sélectionnez « Supprimer » ci-dessous si vous êtes prêt à supprimer le contrat.</div>
+                                    <div class="modal-body">Sélectionnez « Supprimer » ci-dessous si vous êtes prêt à supprimer le deal.</div>
                                     <div class="modal-footer">
                                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-                                        <a class="btn btn-primary" href="{{ route('contrat.delete', $item->id) }}">Supprimer</a>
+                                        <a class="btn btn-primary" href="{{ route('deal.delete', $item->id) }}">Supprimer</a>
                                     </div>
                                 </div>
                             </div>
@@ -298,7 +298,7 @@
             </tbody>
           </table>
         </div>
-        {{ $contrats->links() }}
+        {{ $deals->links() }}
       </div>
     </div>
 
@@ -306,16 +306,16 @@
   <!-- /.container-fluid -->
 
  <!-- addService Modal-->
-<div class="modal fade" id="addContratModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="adddealModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Enregistrer un nouveau contrat</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Enregistrer un nouveau deal</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form class="user" action="{{route('contrat.store')}}" method="post">
+            <form class="user" action="{{route('deal.store')}}" method="post">
                 @csrf
                 <div class="modal-body">
                     <div class="row">
@@ -386,7 +386,7 @@
                             <div class="form-group">
                                 <label for="statut">Sélectionner : l'Etat</label>
                                 <select name="statut" id="statut" class="form-control" required style="border-radius: 10rem;">
-                                    <option value="" disabled selected>Statut Contrat</option>
+                                    <option value="" disabled selected>Statut deal</option>
                                         <option value="en attente">En attente</option>
                                         <option value="à conclure">A conclure</option>
                                         <option value="annuler">Annuler</option>

@@ -8,8 +8,8 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Profile: {{$profile->nom}} {{$profile->prenom}}</h1>
-    <a href="{{route('user.contrat', $profile->id)}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        <i class="fas fa-file-alt fa-sm text-white-50"></i> Contrats
+    <a href="{{route('user.deal', $profile->id)}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-file-alt fa-sm text-white-50"></i> Deals
     </a>
 
     </div>
@@ -57,10 +57,10 @@
         <div class="card-body">
             <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Contrat</div>
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Deal conclure</div>
                 <div class="row no-gutters align-items-center">
                 <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$pourcental_contrat}}%</div>
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$pourcental_deal}}%</div>
                 </div>
                 <div class="col">
                     <div class="progress progress-sm mr-2">
@@ -80,7 +80,7 @@
                         window.onload = function () {
                             var progressBar = document.getElementById('progress-bar');
                             var progress = 0;
-                            var targetProgress = parseInt("{{ $pourcental_contrat }}"); // valeur à partir de la variable PHP
+                            var targetProgress = parseInt("{{ $pourcental_deal }}"); // valeur à partir de la variable PHP
 
                             var interval = setInterval(function() {
                                 if (progress < targetProgress) {
@@ -112,8 +112,8 @@
         <div class="card-body">
             <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Contrat en cours</div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$contrat_encours}}</div>
+                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Deal en cours</div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">{{$deal_encours}}</div>
             </div>
             <div class="col-auto">
                 <i class="fas fa-file-alt fa-2x text-warning"></i>

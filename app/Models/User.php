@@ -34,6 +34,11 @@ class User extends Authenticatable
         return $this->belongsTo(Service::class);
     }
 
+    public function deals()
+    {
+        return $this->hasMany(Deal::class);
+    }
+
     public function contrats()
     {
         return $this->hasMany(Contrat::class);
@@ -69,7 +74,7 @@ class User extends Authenticatable
 
     public function chiffreAffairesDuJour($date)
     {
-        return $this->contrats()
+        return $this->deals()
                     ->where('statut', 'à conclure')
                     ->whereDate('date_conclusion', $date)
                     ->sum('montant');
@@ -78,7 +83,7 @@ class User extends Authenticatable
 
     public function chiffreAffaires()
     {
-        return $this->contrats()
+        return $this->deals()
                     ->where('statut', 'à conclure')
                     ->sum('montant');
     }

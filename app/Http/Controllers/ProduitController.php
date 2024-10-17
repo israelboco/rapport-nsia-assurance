@@ -13,22 +13,17 @@ class ProduitController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(string $serviceId)
+    public function index()
     {
         $user = Auth::user();
-        $services = Service::where('remove', false)->get();
 
         if (request()->ajax()) {
-            $produits = Produit::where('remove', false)->where('service_id', $serviceId)->get();
-            $produits->transform(function($query){
-                $query->service = Service::where('id', $query->service_id)->first();
-                return $query;
-            });
+            $produits = Produit::where('remove', false)->paginate(10);
             return response()->json($produits); 
         }
         
-        $produits = Produit::where('service_id', $serviceId)->get();
-        return view('produit.index', compact(['user', 'services', 'produits']));
+        $produits = Produit::paginate(10);
+        return view('produit.index', compact(['user', 'produits']));
     }
 
     /**
@@ -46,22 +41,21 @@ class ProduitController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'nom' => 'required',
-            'service_id' => 'required',
+            'code_unique' => 'required',
+            // 'description' => 'required',
         ]);
 
         if ($validation->fails()){
-            if(!$request->service_id){
-                flash()->warning('Selectionner le service');
-            }
             $validation->validate($request, [
                 'nom' => 'required',
-                'service_id' => 'required',
+                'code_unique' => 'required',
             ]);
         }
 
         $produit = Produit::create([
             'nom' => $request->nom,
-            'service_id' => $request->service_id
+            'code_unique' => $request->code_unique,
+            'description' => $request->description,
         ]);
 
         flash()->success('Produit créé avec succès');
@@ -92,18 +86,19 @@ class ProduitController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'nom' => 'required',
-            'service_id' => 'required',
+            'code_unique' => 'required',
         ]);
         if ($validation->fails()){
             $validation->validate($request, [
                 'nom' => 'required',
-                'service_id' => 'required',
+                'code_unique' => 'required',
             ]);
         }
         
         $produit->update([
             'nom' => $request->nom,
-            'service_id' => $request->service_id
+            'code_unique' => $request->code_unique,
+            'description' => $request->description,
         ]);
 
         flash()->success('Produit modifié avec succès');

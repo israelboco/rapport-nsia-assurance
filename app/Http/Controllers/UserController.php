@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contrat;
+use App\Models\Deal;
 use App\Models\Role;
 use App\Models\Service;
 use App\Models\Produit;
@@ -106,7 +106,7 @@ class UserController extends Controller
         return view('user.index', compact(['user', 'services', 'roles', 'agents', 'agent_sup', 'select_service', 'select_role']));
     }
     
-    public function userContrat(User $user) {
+    public function userDeal(User $user) {
         $profile = $user;
         if (!Auth::user()->is_admin && Auth::user()->id != $profile->id) {
             $subordinates_id = Supervisor::where('supervisor_id', Auth::user()->id)->pluck('user_id');
@@ -121,8 +121,8 @@ class UserController extends Controller
                         ->where('remove', false)->get();
         }
         $user = User::where('id', Auth::user()->id)->first();
-        $contrats = Contrat::where('remove', false)->where('user_id', $profile->id)->paginate(10);
-        return view('user.contrat', compact('profile', 'user', 'contrats', 'produits'));
+        $deals = Deal::where('remove', false)->where('user_id', $profile->id)->paginate(10);
+        return view('user.deal', compact('profile', 'user', 'deals', 'produits'));
     }
 
 
@@ -138,11 +138,11 @@ class UserController extends Controller
         $subordinates_count = Supervisor::where('supervisor_id', $profile->id)->count();
         $subordinates_id = Supervisor::where('supervisor_id', $profile->id)->pluck('user_id');
         $total_user_service_id = User::where('remove', false)->where('service_id', $profile->service_id)->pluck('id');
-        $total_contrat = Contrat::where('remove', false)->whereIn('user_id', $total_user_service_id)->count();
+        $total_deal = Deal::where('remove', false)->whereIn('user_id', $total_user_service_id)->count();
         // $total_contrat = Contrat::whereIn('user_id', $total_user_service_id)->count();
-        $contrat_encours = Contrat::whereIn('user_id', $subordinates_id)->where('statut', 'en cours')->count();
+        $deal_encours = Deal::whereIn('user_id', $subordinates_id)->where('statut', 'en cours')->count();
 
-        $pourcental_contrat = isset($total_contrat) ? ($profile->contrats()->count() / $total_contrat) * 100 : 0;
+        $pourcental_deal = isset($total_deal) ? ($profile->deals()->count() / $total_deal) * 100 : 0;
 
         $agent_sup_id = Supervisor::select('supervisor_id')->distinct()->pluck('supervisor_id');
             $agent_sup = User::whereIn('id', $agent_sup_id)
@@ -150,7 +150,7 @@ class UserController extends Controller
                             ->orwhere('role_id', '<=', $profile->role_id)
                             ->distinct()
                             ->get();
-        return view('user.profile', compact('profile', 'user', 'chiffre_affaire', 'subordinates_count', 'pourcental_contrat', 'contrat_encours', 'agent_sup'));
+        return view('user.profile', compact('profile', 'user', 'chiffre_affaire', 'subordinates_count', 'pourcental_deal', 'deal_encours', 'agent_sup'));
     }
 
     public function showRoles() {
@@ -195,7 +195,7 @@ class UserController extends Controller
             if($sub == 'true'){
                 $subordinates_id = Supervisor::where('supervisor_id', $user->id)->pluck('user_id');
             }
-            $ca = Contrat::where('user_id', $user_id)
+            $ca = Deal::where('user_id', $user_id)
                             ->where('remove', false)
                             ->where('statut', 'à conclure')
                             ->when($datesearch, function ($query) use ($datesearch) {

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contrat;
+use App\Models\Deal;
 use App\Models\Produit;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,8 +18,8 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        $products = Produit::where('remove', false)->with('contrats')
-                ->whereHas('contrats', function($query) {
+        $products = Produit::where('remove', false)->with('deals')
+                ->whereHas('deals', function($query) {
                     $query->where('statut', 'à conclure')
                         ->groupBy('produit_id')  // Group by produit_id
                         ->selectRaw('produit_id, SUM(montant) as total_montant')
@@ -28,32 +28,32 @@ class HomeController extends Controller
                 ->limit(3)
                 ->get();
         // dd($products);
-        $total = Contrat::where('statut', 'à conclure')->count();
+        $total = Deal::where('statut', 'à conclure')->count();
         // $total = $products->sum('contrats_count'); // Quantité totale des contrats à conclure
 
         $productPercentages = $products->map(function($product) use ($total) {
-            $contractsCount = $product->contrats->count(); // Nombre de contrats pour le produit
+            $dealsCount = $product->deals->count(); // Nombre de contrats pour le produit
             return [
                 'name' => $product->nom,
-                'percentage' => $total ? ($contractsCount / $total) * 100 : 0
+                'percentage' => $total ? ($dealsCount / $total) * 100 : 0
             ];
         });
 
         $agent_count = User::where('remove', false)->count();
         $agent_id = User::where('remove', false)->pluck('id');
-        $chiffre_affaire = Contrat::whereIn('user_id', $agent_id)
+        $chiffre_affaire = Deal::whereIn('user_id', $agent_id)
                             ->where('remove', false)
                             ->where('statut', 'à conclure')->sum('montant');
-        $contrat_count = Contrat::whereIn('user_id', $agent_id)
+        $deal_count = Deal::whereIn('user_id', $agent_id)
                             ->where('remove', false)
                             ->where('statut', 'à conclure')->count();
-        $contrat_encours = Contrat::whereIn('user_id', $agent_id)
+        $deal_encours = Deal::whereIn('user_id', $agent_id)
                             ->where('statut', 'en cours')->sum('montant');
                             
         $chiffre_affaire_annuel = [];
         $month = [1, 2, 3, 4, 5, 6, 7, 8 , 9, 10, 11, 12];
         foreach($month as $i){
-            $ca = Contrat::whereIn('user_id', $agent_id)
+            $ca = Deal::whereIn('user_id', $agent_id)
                             ->where('remove', false)
                             ->where('statut', 'à conclure')
                             ->whereYear('created_at', date('Y'))
@@ -62,7 +62,7 @@ class HomeController extends Controller
             array_push($chiffre_affaire_annuel, $ca);
         }       
         // dd($chiffre_affaire_annuel);
-        return view('dashboard', compact(['user', 'productPercentages', 'chiffre_affaire', 'agent_count', 'contrat_count', 'contrat_encours', 'chiffre_affaire_annuel']));
+        return view('dashboard', compact(['user', 'productPercentages', 'chiffre_affaire', 'agent_count', 'deal_count', 'deal_encours', 'chiffre_affaire_annuel']));
     }
 
     /**

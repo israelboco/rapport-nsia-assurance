@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ContratController;
+use App\Http\Controllers\DealController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\RoleController;
@@ -53,15 +53,15 @@ Route::middleware(['agent'])->group(function () {
         Route::get('user/role/show', 'showRoles')->name('role.select');
         Route::get('user/search', 'index')->name('user.search');
         Route::get('user/{user?}/profile', 'profile')->name('user.profile')->middleware('access');
-        Route::get('user/{user?}/contrat', 'userContrat')->name('user.contrat')->middleware('access');
+        Route::get('user/{user?}/deal', 'userDeal')->name('user.deal')->middleware('access');
         Route::put('user/update/password/{user}', 'updatePassword')->name('user.update_password');
         Route::put('user/update/image/profile/{user}', 'updateProfile')->name('user.image_profile');
     });
 
-    Route::controller(ContratController::class)->group(function () {
-        Route::get('contrat/index', 'index')->name('contrat.index'); 
-        Route::post('contrat/create', 'store')->name('contrat.store');
-        Route::put('contrat/update/{contrat}', 'update')->name('contrat.update');
-        Route::get('contrat/delete/{contrat}', 'destroy')->name('contrat.delete')->middleware('access');
+    Route::controller(DealController::class)->group(function () {
+        Route::get('deal/index', 'index')->name('deal.index'); 
+        Route::post('deal/create', 'store')->name('deal.store');
+        Route::put('deal/update/{deal}', 'update')->name('deal.update');
+        Route::get('deal/delete/{deal}', 'destroy')->name('deal.delete')->middleware('access');
     });
 });

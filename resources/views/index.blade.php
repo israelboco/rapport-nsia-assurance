@@ -98,14 +98,34 @@
     <hr class="sidebar-divider">
 
     <!-- Heading -->
-    <div class="sidebar-heading">CONTRAT</div>
+    <div class="sidebar-heading">DEAL</div>
 
     <!-- Nav Item - Contrat -->
     <li class="nav-item">
-        <a class="nav-link" href="{{route('contrat.index')}}">
+        <a class="nav-link" href="{{route('deal.index')}}">
             <i class="fas fa-file-alt"></i>
-            <span>Contrat</span>
+            <span>Deal</span>
         </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">TRAITEMENT CA</div>
+
+    <!-- Nav Item - Agents Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePagesCA" aria-expanded="true" aria-controls="collapsePagesCA">
+            <i class="fas fa-fw fa-user"></i>
+            <span>CA</span>
+        </a>
+        <div id="collapsePagesCA" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{route('user.index')}}">Importer</a>
+                <a class="collapse-item" href="{{route('user.profile', $user->id)}}">Exporter</a>
+            </div>
+        </div>
     </li>
 
     <!-- Divider -->

@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('produits', function (Blueprint $table) {
             $table->id();
             $table->string('nom')->unique();
-            $table->foreignId('service_id')->nullable()->constrained()->onDelete('cascade');
+            $table->string('code_unique')->unique();
+            $table->text('description')->nullable();
+            $table->boolean('remove')->default(false);
             $table->timestamps();
         });
     }

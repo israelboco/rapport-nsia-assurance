@@ -17,9 +17,6 @@ return new class extends Migration
         Schema::table('roles', function (Blueprint $table) {
             $table->boolean('remove')->default(false);
         });
-        Schema::table('produits', function (Blueprint $table) {
-            $table->boolean('remove')->default(false);
-        });
         Schema::table('users', function (Blueprint $table) {
             $table->boolean('remove')->default(false);
         });
@@ -37,9 +34,6 @@ return new class extends Migration
             $table->dropIfExists('remove');
         });
         Schema::table('roles', function (Blueprint $table) {
-            $table->dropIfExists('remove');
-        });
-        Schema::table('produits', function (Blueprint $table) {
             $table->dropIfExists('remove');
         });
         Schema::table('users', function (Blueprint $table) {

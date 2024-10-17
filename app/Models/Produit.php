@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Produit extends Model
 {
     use HasFactory;
-    protected $fillable = ['nom', 'service_id'];
+    protected $fillable = ['nom', 'code_unique', 'description'];
 
-    public function service()
+    public function deals()
     {
-        return $this->belongsTo(Service::class);
+        return $this->hasMany(Deal::class);
     }
 
     public function contrats()
