@@ -122,8 +122,8 @@
         </a>
         <div id="collapsePagesCA" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{route('user.index')}}">Importer</a>
-                <a class="collapse-item" href="{{route('user.profile', $user->id)}}">Exporter</a>
+                <a class="collapse-item" href="{{route('contrat.index')}}">CA</a>
+                <!-- <a class="collapse-item" href="{{route('user.profile', $user->id)}}">Exporter</a> -->
             </div>
         </div>
     </li>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ContratController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProduitController;
@@ -63,6 +64,13 @@ Route::middleware(['agent'])->group(function () {
         Route::get('deal/index', 'index')->name('deal.index'); 
         Route::post('deal/create', 'store')->name('deal.store');
         Route::put('deal/update/{deal}', 'update')->name('deal.update');
-        Route::get('deal/delete/{deal}', 'destroy')->name('deal.delete')->middleware('access');
+        Route::get('deal/delete/{deal}', 'destroy')->name('deal.delete'); //->middleware('access');
+    });
+
+    Route::controller(ContratController::class)->group(function () {
+        Route::get('contrat/index', 'index')->name('contrat.index'); 
+        Route::post('contrat/create', 'detail')->name('contrat.detail');
+        Route::post('contrat/import', 'import')->name('contrat.import');
+        Route::post('contrat/export', 'export')->name('contrat.export');
     });
 });
