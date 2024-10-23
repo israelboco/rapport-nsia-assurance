@@ -28,6 +28,14 @@ return new class extends Migration
             $table->string('compte_bancaire')->unique()->nullable();
             $table->foreignId('service_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamp('email_verified_at')->nullable();
+            $table->boolean('remove')->default(false);
+            $table->enum('sexe', ['MASCULIN', 'FEMININ'])->default('MASCULIN');
+            $table->enum('mode_reglement', ['MOMO', 'BANQUE', 'VIREMENT', 'CHEQUE'])->default('MOMO');
+            $table->timestamp('date_naissance')->nullable();
+            $table->string('lieu_naissance')->nullable();
+            $table->string('fixe')->nullable();
+            $table->string('banque')->nullable();
+            $table->timestamp('date_collaboration')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

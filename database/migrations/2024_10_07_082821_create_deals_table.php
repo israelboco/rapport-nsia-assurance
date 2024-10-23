@@ -23,7 +23,8 @@ return new class extends Migration
             $table->string('prospect_email')->nullable();
             $table->string('lieu_signature');
             $table->enum('statut', ['en attente', 'annuler', 'à conclure']);
-            $table->timestamp('date_conclusion')->nullable(); // Date pour calculer le chiffre d'affaires
+            $table->timestamp('date_conclusion')->nullable(); 
+            $table->boolean('remove')->default(false);// Date pour calculer le chiffre d'affaires
             $table->timestamps();
         });
 

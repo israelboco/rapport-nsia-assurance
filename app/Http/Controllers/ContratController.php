@@ -8,6 +8,8 @@ use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Imports\ContratsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ContratController extends Controller
 {
@@ -34,7 +36,7 @@ class ContratController extends Controller
                 return $query->where('produit_id', $produit_id);
                 })->
             when($search, function ($query, $search) {
-                return $query->where('Produit', 'LIKE', "%{$search}%")
+                return $query->where('produit_code', 'LIKE', "%{$search}%")
                                 ->orWhere('Police', 'LIKE', "%{$search}%")
                                 ->orWhere('N_Quittance', 'LIKE', "%{$search}%");
             })->
@@ -42,6 +44,15 @@ class ContratController extends Controller
 
         return view('contrat.index', compact(['user', 'contrats', 'produits', 'services', 'select_service', 'select_produit']));
     }
+
+
+    public function detail(Request $request, Contrat $contrat)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+    
+        return view('contrat.detail', compact(['user', 'contrat']));
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -56,37 +67,7 @@ class ContratController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = $request->validate([
-            // 'user_id' => 'required',
-            // 'nature' => 'required',
-            'produit_id' => 'required',
-            'montant'  => 'required',
-            'prospect_nom' => 'required',
-            'prospect_prenom'  => 'required',
-            'prospect_telephone' => 'required',
-            'prospect_email' => 'required',
-            'lieu_signature' => 'required',
-            'statut' => 'required',
-            // 'date_conclusion' => 'required',
-        ]);
-
-        $deal = Deal::create([
-            'user_id' => Auth::user()->id,
-            'nature' => $request->nature,
-            'produit_id' => $request->produit_id,
-            'montant' => $request->montant,
-            'prospect_nom' => $request->prospect_nom,
-            'prospect_prenom' => $request->prospect_prenom,
-            'prospect_telephone' => $request->prospect_telephone,
-            'prospect_email' => $request->prospect_email,
-            'lieu_signature' => $request->lieu_signature,
-            'statut' => $request->statut,
-            'date_conclusion' => $request->date_conclusion,
-        ]);
-
-        flash()->success('Deal créé avec succès');
-
-        return back();
+       
     }
 
     /**
@@ -108,49 +89,33 @@ class ContratController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Deal $deal)
+    public function update(Request $request)
     {
-        $validation = $request->validate([
-            // 'user_id' => 'required',
-            // 'nature' => 'required',
-            'produit_id' => 'required',
-            'montant'  => 'required',
-            'prospect_nom' => 'required',
-            'prospect_prenom'  => 'required',
-            'prospect_telephone' => 'required',
-            'prospect_email' => 'required',
-            'lieu_signature' => 'required',
-            'statut' => 'required',
-        ]);
-
-        $deal->update([
-            'user_id' => Auth::user()->id,
-            'nature' => $request->nature,
-            'produit_id' => $request->produit_id,
-            'montant' => $request->montant,
-            'prospect_nom' => $request->prospect_nom,
-            'prospect_prenom' => $request->prospect_prenom,
-            'prospect_telephone' => $request->prospect_telephone,
-            'prospect_email' => $request->prospect_email,
-            'lieu_signature' => $request->lieu_signature,
-            'statut' => $request->statut,
-            'date_conclusion' => $request->date_conclusion,
-        ]);
-
-        flash()->success('Deal modifié avec succès');
-
-        return back();
+        
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Deal $deal)
+    public function destroy(Contrat $contrat)
     {
-        $deal->remove = true;
-        $deal->save();
+        $contrat->remove = true;
+        $contrat->save();
 
-        flash()->success('Deal supprimer avec succès');
+        flash()->success('Contrat supprimer avec succès');
+
+        return back();
+    }
+
+    public function import(Request $request){
+
+        $validation = $request->validate([
+            'fichier_excel' => 'required|file',
+        ]);
+
+        Excel::import(new ContratsImport, $request->file('fichier_excel'));
+
+        flash()->success('Fichier excel importé avec succès');
 
         return back();
     }

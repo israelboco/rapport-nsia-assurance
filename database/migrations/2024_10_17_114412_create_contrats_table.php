@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('produit_id')->nullable()->constrained('produits')->onDelete('set null');
+            $table->string('produit_code')->nullable();
             $table->string('Police')->nullable();
             $table->string('N_Quittance')->nullable();
             $table->string('N_Quittance_Annulee')->nullable();
@@ -44,13 +45,13 @@ return new class extends Migration
             $table->string('N_Payeur')->nullable();
             $table->string('Point_de_vente')->nullable();
             $table->string('convention')->nullable();
-            $table->timestamp('Date_Creation')->nullable();
-            $table->timestamp('Date_Creation_QCO')->nullable();
-            $table->timestamp('Date_Annulation_QCO')->nullable();
+            $table->string('Date_Creation')->nullable();
+            $table->string('Date_Creation_QCO')->nullable();
+            $table->string('Date_Annulation_QCO')->nullable();
             $table->string('Mois_Effet_Quittance')->nullable();
             $table->string('N_Police')->nullable();
             $table->string('N_Client')->nullable();
-            $table->timestamp('Date_Naissance');
+            $table->string('Date_Naissance')->nullable();
             $table->string('Adresse')->nullable();
             $table->string('Contact1')->nullable();
             $table->string('Contact2')->nullable();
@@ -64,6 +65,7 @@ return new class extends Migration
             $table->string('Branche')->nullable();
             $table->string('Reseau')->nullable();
             $table->string('Typeaffaire')->nullable();
+            $table->boolean('remove')->default(false);
             $table->timestamps();
         });
     }

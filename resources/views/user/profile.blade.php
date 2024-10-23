@@ -9,7 +9,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Profile: {{$profile->nom}} {{$profile->prenom}}</h1>
     <a href="{{route('user.deal', $profile->id)}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        <i class="fas fa-file-alt fa-sm text-white-50"></i> Deals
+        <i class="fas fa-file-alt fa-sm text-white-50"></i> Liste des Deals
     </a>
 
     </div>
@@ -129,8 +129,11 @@
         <!-- Content Column -->
         <div class="col-lg-12 mb-4">
             <div class="card shadow mb-4 w-100">
-                <div class="card-header py-3">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-primary">Traitement du chiffres d'affaire</h6>
+                    <a class="btn btn-primary btn-sm" href="{{route('deal.export')}}">
+                        <i class="fas fa-file-excel fa-sm text-white-50"></i> Exporter
+                    </a>
                 </div>
                 <div class="card-body">
                     <!-- Parametre -->

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nom')->unique(); // Exemple: Responsable Réseau
             $table->unsignedInteger('niveau'); // Niveau de permission
-            $table->foreignId('service_id')->constrained()->onDelete('cascade'); // Association au service
+            $table->foreignId('service_id')->constrained()->onDelete('cascade');
+            $table->boolean('remove')->default(false); // Association au service
             $table->timestamps();
         });
     }

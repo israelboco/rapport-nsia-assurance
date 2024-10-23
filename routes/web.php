@@ -57,7 +57,7 @@ Route::middleware(['agent'])->group(function () {
         Route::get('user/{user?}/deal', 'userDeal')->name('user.deal')->middleware('access');
         Route::put('user/update/password/{user}', 'updatePassword')->name('user.update_password');
         Route::put('user/update/image/profile/{user}', 'updateProfile')->name('user.image_profile');
-        Route::get('users/export', 'export');
+        Route::get('users/export', 'export')->name('user.export');
     });
 
     Route::controller(DealController::class)->group(function () {
@@ -65,12 +65,13 @@ Route::middleware(['agent'])->group(function () {
         Route::post('deal/create', 'store')->name('deal.store');
         Route::put('deal/update/{deal}', 'update')->name('deal.update');
         Route::get('deal/delete/{deal}', 'destroy')->name('deal.delete'); //->middleware('access');
+        Route::get('deals/export', 'export')->name('deal.export');
     });
 
     Route::controller(ContratController::class)->group(function () {
         Route::get('contrat/index', 'index')->name('contrat.index'); 
-        Route::post('contrat/create', 'detail')->name('contrat.detail');
+        Route::get('contrat/detail/{contrat}', 'detail')->name('contrat.detail');
         Route::post('contrat/import', 'import')->name('contrat.import');
-        Route::post('contrat/export', 'export')->name('contrat.export');
+        Route::get('contrat/export', 'export')->name('contrat.export');
     });
 });
