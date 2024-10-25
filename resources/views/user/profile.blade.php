@@ -142,22 +142,52 @@
                             <h6 class="m-0 font-weight-bold text-primary">Paramètre</h6>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="option1" id="surbordonnes">
-                                        <label class="form-check-label" for="surbordonnes">
-                                            Surbordonnées
-                                        </label>
-                                    </div>
+                        <div class="row">
+                            <div class="col-md-6" style="padding: 10px;">
+                                <div class="form-check" style="padding: 10px;">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadiosJour" value="optionJour" checked>
+                                    <label class="form-check-label" for="exampleRadiosJour">
+                                        Objectif journalier
+                                    </label>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="dateInput">Date:</label>
-                                        <input class="form-control" type="date" id="dateInput" placeholder="Date...">
-                                    </div>
+                                <div class="form-check" style="padding: 10px;">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1">
+                                    <label class="form-check-label" for="exampleRadios1">
+                                        Objectif hebdomadaire   
+                                    </label>
                                 </div>
                             </div>
+                            <div class="col-md-6" style="padding: 10px;">
+                                <div class="form-check" style="padding: 10px;">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                                    <label class="form-check-label" for="exampleRadios2">
+                                        Objectif mensuel
+                                    </label>
+                                </div>
+                                <div class="form-check" style="padding: 10px;">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3">
+                                    <label class="form-check-label" for="exampleRadios3">
+                                        Objectif annuel
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6" style="padding: 10px;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="surbordonnes">
+                                    <label class="form-check-label" for="surbordonnes">
+                                        Surbordonnées
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="padding: 10px;">
+                                <div class="form-group">
+                                    <label for="dateInput">Date:</label>
+                                    <input class="form-control" type="date" id="dateInput" placeholder="Date...">
+                                </div>
+                            </div>
+                        </div>
+
                             <button class="btn btn-primary" onclick="calculerChiffreAffaire()">Voir</button>
                         </div>
                     </div>
@@ -167,11 +197,33 @@
                             <h6 class="m-0 font-weight-bold text-primary">Calcule du chiffre d'affaire</h6>
                         </div>
                         <div class="card-body">
-                            <div class="form-group">
-                                <label for="resultatInput">Chiffre d'affaire</label>
-                                <p id="resultatInput" class="font-weight-bold">0 <span>XOF</span></p>
+                            <div class="row">
+                                <div class="col-lg-6 mb-4">
+                                    <div class="form-group">
+                                        <label for="resultatInput">Chiffre d'affaire:</label>
+                                        <p id="resultatInput" class="font-weight-bold">0 <span>XOF</span></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="resultatInput">Nombre de contrat:</label>
+                                        <p id="resultatInput" class="font-weight-bold">0</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mb-4">
+                                    <div class="form-group">
+                                        <label for="resultatInput">Objectif Chiffre d'affaire:</label>
+                                        <p id="resultatInput" class="font-weight-bold">0 <span>XOF</span></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="resultatInput">Objectif Nombre de contrat:</label>
+                                        <p id="resultatInput" class="font-weight-bold">0</p>
+                                    </div>
+                                </div>
+                                <a href="#" class="btn btn-success btn-circle btn-lg">
+                                    <i class="fas fa-check"></i>
+                                </a>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -325,28 +377,31 @@
                     <h6 class="m-0 font-weight-bold text-primary">Modifier mot de passe</h6>
                 </div>
                 <div class="card-body">
-                    <form class="user" action="{{route('user.update_password', $profile->id)}}" method="post">
-                        @csrf
-                        @method('put')
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <input type="password" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer l'ancien Mot de passe..." name="old_password" required>
-                                <span class="text-danger small">@error('old_password'){{ $message }} @enderror</span>
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control form-control-user" id="exampleInputNom" aria-describedby="emailHelp" placeholder="Entrer le Mot de passe..." name="password" required>
-                                <span class="text-danger small">@error('password'){{ $message }} @enderror</span>
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control form-control-user" id="password_confirmation" aria-describedby="emailHelp" placeholder="Confirmation mot de passe..." name="password_confirmation" required>
-                                <span class="text-danger small">@error('password_confirmation'){{ $message }} @enderror</span>
-                            </div>
+                <form class="user" action="{{ route('user.update_password', $profile->id) }}" method="post">
+                    @csrf
+                    @method('put')
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="old_password">Ancien mot de passe <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control form-control-user" id="old_password" placeholder="Entrer l'ancien mot de passe..." name="old_password" required>
+                            <span class="text-danger small">@error('old_password'){{ $message }} @enderror</span>
                         </div>
-                        <div class="modal-footer">
-                            <!-- <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button> -->
-                            <button type="submit" class="btn btn-primary">Modifier</button>
+                        <div class="form-group">
+                            <label for="password">Nouveau mot de passe <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control form-control-user" id="password" placeholder="Entrer le mot de passe..." name="password" required>
+                            <span class="text-danger small">@error('password'){{ $message }} @enderror</span>
                         </div>
-                    </form>
+                        <div class="form-group">
+                            <label for="password_confirmation">Confirmation du mot de passe <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control form-control-user" id="password_confirmation" placeholder="Confirmer le mot de passe..." name="password_confirmation" required>
+                            <span class="text-danger small">@error('password_confirmation'){{ $message }} @enderror</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Modifier</button>
+                    </div>
+                </form>
+
                 </div>
             </div>
         @endif

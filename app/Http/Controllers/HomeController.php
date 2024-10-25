@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contrat;
 use App\Models\Deal;
 use App\Models\Produit;
 use App\Models\User;
@@ -27,7 +28,7 @@ class HomeController extends Controller
                 })
                 ->limit(3)
                 ->get();
-        // dd($products);
+                
         $total = Deal::where('statut', 'à conclure')->count();
         // $total = $products->sum('contrats_count'); // Quantité totale des contrats à conclure
 
@@ -51,6 +52,7 @@ class HomeController extends Controller
                             ->where('statut', 'en cours')->sum('montant');
                             
         $chiffre_affaire_annuel = [];
+        $chiffre_affaire_contrat_annuel = [];
         $month = [1, 2, 3, 4, 5, 6, 7, 8 , 9, 10, 11, 12];
         foreach($month as $i){
             $ca = Deal::whereIn('user_id', $agent_id)
@@ -59,10 +61,13 @@ class HomeController extends Controller
                             ->whereYear('created_at', date('Y'))
                             ->whereMonth('created_at', $i)
                             ->sum('montant');
+            $ca = Contrat::whereYear('created_at', date('Y'))
+                            ->whereMonth('created_at', $i)
+                            ->sum('solde');
             array_push($chiffre_affaire_annuel, $ca);
+            array_push($chiffre_affaire_contrat_annuel, $ca);
         }       
-        // dd($chiffre_affaire_annuel);
-        return view('dashboard', compact(['user', 'productPercentages', 'chiffre_affaire', 'agent_count', 'deal_count', 'deal_encours', 'chiffre_affaire_annuel']));
+        return view('dashboard', compact(['user', 'productPercentages', 'chiffre_affaire', 'agent_count', 'deal_count', 'deal_encours', 'chiffre_affaire_annuel', 'chiffre_affaire_contrat_annuel']));
     }
 
     /**

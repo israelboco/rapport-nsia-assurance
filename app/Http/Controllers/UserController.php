@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Exports\UsersExport;
+use App\Imports\UsersImport;
+use App\Imports\UserSupImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -191,6 +193,7 @@ class UserController extends Controller
         $datesearch = $request->query('datesearch');
         $user_id = $request->query('user_id');
         $sub = $request->query('sub');
+        $objectif = $request->query('objectif');
         $user = User::where('id', $user_id)->first();
         if (request()->ajax()) {
             $subordinates_id = null;
@@ -436,6 +439,32 @@ class UserController extends Controller
     public function export() 
     {
         return Excel::download(new UsersExport, 'users.xlsx');
+    }
+
+    public function importAgent(Request $request){
+
+        $validation = $request->validate([
+            'fichier_excel' => 'required|file',
+        ]);
+
+        Excel::import(new UsersImport, $request->file('fichier_excel'));
+
+        flash()->success('Fichier excel importé avec succès');
+
+        return back();
+    }
+
+    public function importAgentSup(Request $request){
+
+        $validation = $request->validate([
+            'fichier_excel' => 'required|file',
+        ]);
+
+        Excel::import(new UserSupImport, $request->file('fichier_excel'));
+
+        flash()->success('Fichier excel importé avec succès');
+
+        return back();
     }
 
 }

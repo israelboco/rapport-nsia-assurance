@@ -158,6 +158,78 @@
         </div>
         </div>
     </div>
+
+        <div class="col-md-6 mb-4">  
+            <div class="card shadow mb-4">
+                <a href="#collapseCardImport" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardImport">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Importation
+                    </h6>
+                </a>
+                <div class="collapse" id="collapseCardImport">
+                    <form class="user">
+                        <div class="modal-body">
+                        <div class="ml-auto">
+                            <form class="form-inline d-flex align-items-center" action="{{route('agent_info.import')}}" method="POST" enctype="multipart/form-data" id="importForm">
+                                @csrf
+                                <div class="input-group mb-3">
+                                    <label class="mr-2">Importer les agents</label>
+                                    <input type="file" name="fichier_excel" class="form-control form-control-sm">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary btn-sm" type="submit">Importer</button>
+                                    </div>
+                                </div>
+                                <!-- Loading Spinner -->
+                                <div id="loadingSpinner" style="display: none; margin-left: 10px; align-items: center; color: #007bff;">
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Chargement...
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="ml-auto">
+                            <form class="form-inline d-flex align-items-center" action="{{route('agent_sup.import')}}" method="POST" enctype="multipart/form-data" id="importForm">
+                                @csrf
+                                <div class="input-group mb-3">
+                                    <label class="mr-2">Importer les superviseur d'un agent</label>
+                                    <input type="file" name="fichier_excel" class="form-control form-control-sm">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary btn-sm" type="submit">Importer</button>
+                                    </div>
+                                </div>
+                                <!-- Loading Spinner -->
+                                <div id="loadingSpinner" style="display: none; margin-left: 10px; align-items: center; color: #007bff;">
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Chargement...
+                                </div>
+                            </form>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">  
+            <div class="card shadow mb-4">
+                <a href="#collapseCardExport" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExport">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Exportation
+                    </h6>
+                </a>
+                <div class="collapse" id="collapseCardExport">
+                    <form class="user">
+                        <div class="modal-body">
+                            <div class="ml-auto">
+                                <div class="d-flex align-items-center justify-content-between p-2">
+                                    <h6 class="mb-2 font-weight-bold text-primary">Racap sur les dials</h6>
+                                    <a class="btn btn-primary btn-sm" href="{{route('deal_object.export')}}">
+                                        <i class="fas fa-file-excel fa-sm text-white-50"></i> Exporter
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         window.onload = function () {
@@ -166,13 +238,22 @@
                 type: 'line',
                 data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    datasets: [{
-                        label: 'Chiffre d\'affaires annuel XOF',
-                        data: {!! json_encode($chiffre_affaire_annuel) !!}, 
-                        backgroundColor: 'rgba(78, 115, 223, 0.05)',
-                        borderColor: 'rgba(78, 115, 223, 1)',
-                        borderWidth: 2
-                    }]
+                    datasets: [
+                        {
+                            label: 'Chiffre d\'affaires annuel (Deal) XOF',
+                            data: {!! json_encode($chiffre_affaire_annuel) !!}, 
+                            backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                            borderColor: 'rgba(78, 115, 223, 1)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Chiffre d\'affaires annuel (Contrat) XOF',
+                            data: {!! json_encode($chiffre_affaire_contrat_annuel) !!}, 
+                            backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                            borderColor: 'rgba(78, 115, 223, 1)',
+                            borderWidth: 2
+                        }
+                    ]
                 },
                 options: {
                     scales: {

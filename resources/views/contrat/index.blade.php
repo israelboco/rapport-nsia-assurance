@@ -85,9 +85,13 @@
 
 
     
-    <div class="clo-12">
-        <h6 class="mb-2 font-weight-bold text-primary col-12">Liste Contrats</h6>
+    <div class="d-flex align-items-center justify-content-between p-2">
+        <h6 class="mb-2 font-weight-bold text-primary">Liste Contrats</h6>
+        <a class="btn btn-primary btn-sm" href="{{route('contrat.export')}}">
+            <i class="fas fa-file-excel fa-sm text-white-50"></i> Exporter
+        </a>
     </div>
+
      
     <div class="row">
         @foreach ($contrats as $contrat)

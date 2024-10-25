@@ -15,6 +15,10 @@ class ContratsImport implements ToModel
     */
     public function model(array $row)
     {
+        if (empty($row[0]) || !is_numeric(($row[0]))) {
+            return null; 
+        }
+        
         $produit = Produit::where('code_unique', $row[0])->first();
         return new Contrat([
             'produit_id' => isset($produit) ? $produit->id: null,
