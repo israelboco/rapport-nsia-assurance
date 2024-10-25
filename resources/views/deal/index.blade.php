@@ -140,10 +140,10 @@
                             <nav class="navbar navbar-expand navbar-light bg-light" style="width: auto;">
                                 <ul class="navbar-nav d-flex">
                                     <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" e-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAction" role="button" e-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Action
                                         </a>
-                                        <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
+                                        <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdownAction">
                                             <!-- Update -->
                                             <a href="#" class="dropdown-item d-flex align-items-center" e-toggle="modal" e-target="#updatedealModal{{ $item->id }}">
                                                 <button class="btn btn-warning btn-circle btn-sm">

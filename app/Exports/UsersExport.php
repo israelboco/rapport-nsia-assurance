@@ -21,7 +21,7 @@ class UsersExport implements FromCollection, WithHeadings
         'compte_bancaire', 'service_id', 'sexe', 'mode_reglement', 'date_naissance',
         'lieu_naissance', 'fixe', 'banque', 'date_collaboration')->get();
 
-        if(!$user->isadmin){
+        if(!$user->is_admin){
             $subordinate_ids = Supervisor::where('supervisor_id', $user->id)->pluck('user_id');
             $service_id = $user->service->id;
             $agents = User::whereIn('id', $subordinate_ids)

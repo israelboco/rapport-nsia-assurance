@@ -200,27 +200,28 @@
                             <div class="row">
                                 <div class="col-lg-6 mb-4">
                                     <div class="form-group">
-                                        <label for="resultatInput">Chiffre d'affaire:</label>
-                                        <p id="resultatInput" class="font-weight-bold">0 <span>XOF</span></p>
+                                        <label for="resultatInputCA">Chiffre d'affaire:</label>
+                                        <p id="resultatInputCA" class="font-weight-bold">0 <span>XOF</span></p>
                                     </div>
                                     <div class="form-group">
-                                        <label for="resultatInput">Nombre de contrat:</label>
-                                        <p id="resultatInput" class="font-weight-bold">0</p>
+                                        <label for="resultatInputNC">Nombre de contrat:</label>
+                                        <p id="resultatInputNC" class="font-weight-bold">0</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 mb-4">
                                     <div class="form-group">
-                                        <label for="resultatInput">Objectif Chiffre d'affaire:</label>
-                                        <p id="resultatInput" class="font-weight-bold">0 <span>XOF</span></p>
+                                        <label for="resultatInputOCA">Objectif Chiffre d'affaire:</label>
+                                        <p id="resultatInputOCA" class="font-weight-bold">0 <span>XOF</span></p>
                                     </div>
                                     <div class="form-group">
-                                        <label for="resultatInput">Objectif Nombre de contrat:</label>
-                                        <p id="resultatInput" class="font-weight-bold">0</p>
+                                        <label for="resultatInputONC">Objectif Nombre de contrat:</label>
+                                        <p id="resultatInputONC" class="font-weight-bold">0</p>
                                     </div>
                                 </div>
-                                <a href="#" class="btn btn-success btn-circle btn-lg">
-                                    <i class="fas fa-check"></i>
+                                <a href="#" class="btn btn-success btn-circle btn-sm" id="statusLink">
+                                    <i id="statusIcon" class="fas fa-check"></i>
                                 </a>
+                                <span id="decision">Félicitation objectif atteint</span>
                             </div>
                         </div>
 
@@ -230,23 +231,45 @@
         </div>
         <script>
             function calculerChiffreAffaire() {
-                const surbordonnes = document.getElementById('surbordonnes').checked;
+                const surbordonnes = document.getElementById('surbordonnes').checked ? 1 : 0;
+                const objectif = document.getElementById('exampleRadiosJour').checked ? 1 : 0;
+                const objectif1 = document.getElementById('exampleRadios1').checked ? 1 : 0;
+                const objectif2 = document.getElementById('exampleRadios2').checked ? 1 : 0;
+                const objectif3 = document.getElementById('exampleRadios3').checked ? 1 : 0;
                 const dateInput = document.getElementById('dateInput').value;
-                let chiffreAffaire;
-                console.log(document.getElementById('surbordonnes'));
-                console.log(surbordonnes);
+                url = "{{ url('user/calcule/ca') }}" + "?user_id={{ $profile->id }}&datesearch=" + dateInput + "&sub=" + surbordonnes
+                        + "&obj=" + objectif + "&obj1=" + objectif1 + "&obj2=" + objectif2 + "&obj3=" + objectif3;
+                console.log(url);
                 $.ajax({
-                    url: "{{ url('user/calcule/ca') }}" + "?user_id=" + '{{$profile->id}}' + "&datesearch=" + dateInput + "&sub=" + surbordonnes,
+                    url: "{{ url('user/calcule/ca') }}" + "?user_id={{ $profile->id }}&datesearch=" + dateInput + "&sub=" + surbordonnes
+                        + "&obj=" + objectif + "&obj1=" + objectif1 + "&obj2=" + objectif2 + "&obj3=" + objectif3,
                     type: 'GET',
                     dataType: 'json',
                     success: function(data) {
-                        chiffreAffaire = data;
+                        const chiffreAffaire = data;
+                        
                         console.log(chiffreAffaire);
-                        document.getElementById('resultatInput').innerHTML = `${chiffreAffaire} <span>XOF</span>`;
+                        document.getElementById('resultatInputCA').innerHTML = `${chiffreAffaire.ca} <span>XOF</span>`;
+                        document.getElementById('resultatInputNC').innerHTML = `${chiffreAffaire.nb_contrats}`;
+                        document.getElementById('resultatInputOCA').innerHTML = `${chiffreAffaire.objectif_ca} <span>XOF</span>`;
+                        document.getElementById('resultatInputONC').innerHTML = `${chiffreAffaire.objectif_nb_contrats}`;
+                        if (chiffreAffaire.ca >= chiffreAffaire.objectif_ca && chiffreAffaire.nb_contrats >= chiffreAffaire.objectif_nb_contrats) {
+                            document.getElementById('decision').innerHTML = `Félicitation objectif atteint`;
+                            document.getElementById('statusIcon').className = "fas fa-check"; // icon for success
+                            document.getElementById('statusLink').className = "btn btn-success btn-circle btn-sm";
+                        } else {
+                            document.getElementById('decision').innerHTML = `Attention`;
+                            document.getElementById('statusIcon').className = "fas fa-exclamation-triangle"; // icon for warning
+                            document.getElementById('statusLink').className = "btn btn-warning btn-circle btn-sm";
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("Erreur lors de l'appel AJAX : ", textStatus, errorThrown);
                     }
                 });
             }
         </script>
+
 
     </div>
 

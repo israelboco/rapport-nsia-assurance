@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ContratsExport;
 use App\Models\Contrat;
 use App\Models\Produit;
 use App\Models\Service;
@@ -118,5 +119,14 @@ class ContratController extends Controller
         flash()->success('Fichier excel importé avec succès');
 
         return back();
+    }
+
+    public function export() 
+    {
+        return Excel::download(new ContratsExport, 'contrats.xlsx');
+
+        // flash()->success('Fichier excel exporté avec succès');
+
+        // return back();
     }
 }

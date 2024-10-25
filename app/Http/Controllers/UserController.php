@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use App\Imports\UserSupImport;
+use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -112,18 +113,13 @@ class UserController extends Controller
     
     public function userDeal(User $user) {
         $profile = $user;
+        $produits = Produit::where('remove', false)->get();
         if (!Auth::user()->is_admin && Auth::user()->id != $profile->id) {
             $subordinates_id = Supervisor::where('supervisor_id', Auth::user()->id)->pluck('user_id');
                 if(!in_array(Auth::user()->id, $subordinates_id->toArray()))
                     return back()->with('error', 'Accès non autorisé.');
         }
-        if($user->is_amdin){
-            $produits = Produit::where('remove', false)->get();
-        }
-        {
-            $produits = Produit::where('service_id', $user->service->id)
-                        ->where('remove', false)->get();
-        }
+        
         $user = User::where('id', Auth::user()->id)->first();
         $deals = Deal::where('remove', false)->where('user_id', $profile->id)->paginate(10);
         return view('user.deal', compact('profile', 'user', 'deals', 'produits'));
@@ -193,7 +189,33 @@ class UserController extends Controller
         $datesearch = $request->query('datesearch');
         $user_id = $request->query('user_id');
         $sub = $request->query('sub');
-        $objectif = $request->query('objectif');
+        $objectif_nb_contrats = 60 * 3/ 5;
+        $objectif_ca = ($objectif_nb_contrats * 10000 + 5000000) / 12 / 4 / 5 * 60;
+        $objectif = 'jour';
+        foreach(range(1, 4) as $obj){
+            $objct = 'obj' . $obj - 1;
+            if($obj != 1){
+                if($request->query($objct)){
+                    if($obj == 2){
+                        $objectif = 'semaine';
+                        $objectif_nb_contrats = $objectif_nb_contrats * 5;
+                        $objectif_ca = $objectif_ca * 5;
+                    }
+                    elseif($obj == 3){
+                        $objectif = 'mois';
+                        $objectif_nb_contrats = $objectif_nb_contrats * 5 * 4;
+                        $objectif_ca = $objectif_ca * 5 * 4;
+                    }
+                    elseif($obj == 4){
+                        $objectif = 'annee';
+                        $objectif_nb_contrats = $objectif_nb_contrats * 5 * 4 * 12;
+                        $objectif_ca = $objectif_ca * 5 * 4 * 12;
+                    }
+                }
+            }
+        }
+        // return response()->json([$request->query( $objct),  $objct]);
+
         $user = User::where('id', $user_id)->first();
         if (request()->ajax()) {
             $subordinates_id = null;
@@ -209,9 +231,52 @@ class UserController extends Controller
                             ->when($subordinates_id, function ($query) use ($subordinates_id) {
                                 return $query->whereIn('user_id', $subordinates_id);
                             })
-                            ->sum('montant');
 
-            return response()->json($ca); 
+                            ->when($objectif == 'jour', function ($query) {
+                                return $query->whereDate('date_conclusion', '>=', Carbon::today());
+                            })
+                            ->when($objectif == 'semaine', function ($query) {
+                                return $query->whereDate('date_conclusion', '>=', Carbon::now()->startOfWeek());
+                            })
+                            ->when($objectif == 'mois', function ($query) {
+                                return $query->whereDate('date_conclusion', '>=', Carbon::now()->startOfMonth());
+                            })
+                            ->when($objectif == 'annee', function ($query) {
+                                return $query->whereDate('date_conclusion', '>=', Carbon::now()->startOfYear());
+                            })
+
+                            ->sum('montant');
+            
+            $nb_contrats = Deal::where('user_id', $user_id)
+                    ->where('remove', false)
+                    ->where('statut', 'à conclure')
+                    ->when($datesearch, function ($query) use ($datesearch) {
+                        return $query->where('date_conclusion', $datesearch);
+                    })
+                    ->when($subordinates_id, function ($query) use ($subordinates_id) {
+                        return $query->whereIn('user_id', $subordinates_id);
+                    })
+                    ->when($objectif == 'jour', function ($query) {
+                        return $query->whereDate('date_conclusion', '>=', Carbon::today());
+                    })
+                    ->when($objectif == 'semaine', function ($query) {
+                        return $query->whereDate('date_conclusion', '>=', Carbon::now()->startOfWeek());
+                    })
+                    ->when($objectif == 'mois', function ($query) {
+                        return $query->whereDate('date_conclusion', '>=', Carbon::now()->startOfMonth());
+                    })
+                    ->when($objectif == 'annee', function ($query) {
+                        return $query->whereDate('date_conclusion', '>=', Carbon::now()->startOfYear());
+                    })
+                    ->count();
+                    
+
+            return response()->json([
+                'ca' => $ca,
+                'nb_contrats' => $nb_contrats,
+                'objectif_nb_contrats' => $objectif_nb_contrats,
+                'objectif_ca' => $objectif_ca,
+            ]); 
         }
     }
     
@@ -438,7 +503,15 @@ class UserController extends Controller
 
     public function export() 
     {
+
+        // flash()->success('Fichier excel exporté avec succès');
+
         return Excel::download(new UsersExport, 'users.xlsx');
+    
+        // $response->headers->set('Content-Disposition', 'attachment; filename="users.xlsx"');
+        
+        // return $response->back();
+
     }
 
     public function importAgent(Request $request){

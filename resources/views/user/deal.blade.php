@@ -74,7 +74,7 @@
                                                 <span aria-hidden="true">×</span>
                                             </button>
                                         </div>
-                                        <form class="user" action="{{ route('contrat.update', $item->id) }}" method="post" enctype="multipart/form-e">
+                                        <form class="user" action="{{ route('deal.update', $item->id) }}" method="post" enctype="multipart/form-e">
                                             @csrf
                                             @method('put')
                                             <div class="modal-body">
@@ -148,7 +148,7 @@
                                                         <div class="form-group">
                                                             <label for="statut">Sélectionner : l'Etat</label>
                                                             <select name="statut" id="statut" class="form-control" required>
-                                                                <option value="" disabled selected>Statut Contrat</option>
+                                                                <option value="" disabled selected>Statut Deal</option>
                                                                     <option value="en attente" {{$item->statut == 'en attente' ? 'selected' : ''}}>En attente</option>
                                                                     <option value="à conclure" {{$item->statut == 'à conclure' ? 'selected' : ''}}>A conclure</option>
                                                                     <option value="annuler" {{$item->statut == 'annuler' ? 'selected' : ''}}>Annuler</option>

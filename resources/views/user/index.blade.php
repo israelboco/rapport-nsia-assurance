@@ -65,15 +65,22 @@
             <i class="fas fa-plus fa-sm text-white-50"></i> Ajouter
         </a>
     </div>
-
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between align-items-center">
         <h6 class="m-0 font-weight-bold text-primary">Agents</h6>
-        <a class="btn btn-primary btn-sm" href="{{route('user.export')}}">
+        <a class="btn btn-primary btn-sm" href="{{route('user.export')}}" id="exportButton">
             <i class="fas fa-file-excel fa-sm text-white-50"></i> Exporter
         </a>
+        <div id="loadingSpinnerExport" style="display: none; margin-left: 10px; align-items: center; color: #007bff;">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Chargement...
+        </div>
     </div>
+    <!-- <script>
+        document.getElementById('exportButton').onclick = function() {
+            document.getElementById('loadingSpinnerExport').style.display = 'inline-flex';
+        };
+    </script> -->
       <div class="card-body">
         <div class="table-responsive">
           <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
