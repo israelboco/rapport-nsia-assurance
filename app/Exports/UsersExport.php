@@ -50,7 +50,6 @@ class UsersExport implements FromCollection, WithHeadings
             'Ifu',
             'Compte bancaire',
             'Service_id',
-            'Remove',
             'Sexe',
             'Mode reglement',
             'Date naissance',

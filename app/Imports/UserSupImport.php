@@ -20,16 +20,18 @@ class UserSupImport implements ToModel
         $user = User::where('code_unique', $row[0])->first();
 
         if($user){
-            $user_sup = User::where('user_id', $user->id)->get();
+            $user_sup = User::where('id', $user->id)->get();
         
             foreach( range(1, 5) as $i){
-                $sup = User::where('code_unique', $row[$i])->first();
-                if($sup){
-                    if (!in_array($sup->id, $user_sup->toArray())) {
-                        Supervisor::create([
-                            'supervisor_id' => $sup,
-                            'user_id' => $user->id,
-                        ]);
+                if(isset($row[$i])){
+                    $sup = User::where('code_unique', $row[$i])->first();
+                    if($sup){
+                        if (!in_array($sup->id, $user_sup->toArray())) {
+                            Supervisor::create([
+                                'supervisor_id' => $sup->id,
+                                'user_id' => $user->id,
+                            ]);
+                        }
                     }
                 }
             }

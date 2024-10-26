@@ -170,7 +170,7 @@
                     <form class="user">
                         <div class="modal-body">
                         <div class="ml-auto">
-                            <form class="form-inline d-flex align-items-center" action="{{route('agent_info.import')}}" method="POST" enctype="multipart/form-data" id="importForm">
+                            <form class="form-inline d-flex align-items-center" action="{{route('agent_info.import')}}" method="POST" enctype="multipart/form-data" id="importFormAgent">
                                 @csrf
                                 <div class="input-group mb-3">
                                     <label class="mr-2">Importer les agents</label>
@@ -180,14 +180,14 @@
                                     </div>
                                 </div>
                                 <!-- Loading Spinner -->
-                                <div id="loadingSpinner" style="display: none; margin-left: 10px; align-items: center; color: #007bff;">
+                                <div id="loadingSpinnerAgent" style="display: none; margin-left: 10px; align-items: center; color: #007bff;">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Chargement...
                                 </div>
                             </form>
                         </div>
 
                         <div class="ml-auto">
-                            <form class="form-inline d-flex align-items-center" action="{{route('agent_sup.import')}}" method="POST" enctype="multipart/form-data" id="importForm">
+                            <form class="form-inline d-flex align-items-center" action="{{route('agent_sup.import')}}" method="POST" enctype="multipart/form-data" id="importFormAgentSup">
                                 @csrf
                                 <div class="input-group mb-3">
                                     <label class="mr-2">Importer les superviseur d'un agent</label>
@@ -197,7 +197,7 @@
                                     </div>
                                 </div>
                                 <!-- Loading Spinner -->
-                                <div id="loadingSpinner" style="display: none; margin-left: 10px; align-items: center; color: #007bff;">
+                                <div id="loadingSpinnerAgentSup" style="display: none; margin-left: 10px; align-items: center; color: #007bff;">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Chargement...
                                 </div>
                             </form>
@@ -207,6 +207,17 @@
                 </div>
             </div>
         </div>
+        <script>
+            document.getElementById('importFormAgent').addEventListener('submit', function() {
+                // Show the loading spinner
+                document.getElementById('loadingSpinnerAgent').style.display = 'inline-flex';
+            });
+            document.getElementById('importFormAgentSup').addEventListener('submit', function() {
+                // Show the loading spinner
+                document.getElementById('loadingSpinnerAgentSup').style.display = 'inline-flex';
+            });
+        </script>
+
         <div class="col-md-6 mb-4">  
             <div class="card shadow mb-4">
                 <a href="#collapseCardExport" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExport">
@@ -220,7 +231,7 @@
                             <div class="ml-auto">
                                 <div class="d-flex align-items-center justify-content-between p-2">
                                     <h6 class="mb-2 font-weight-bold text-primary">Racap sur les dials</h6>
-                                    <a class="btn btn-primary btn-sm" href="{{route('deal_object.export')}}">
+                                    <a class="btn btn-primary btn-sm" href="{{route('deal_object_all.export')}}">
                                         <i class="fas fa-file-excel fa-sm text-white-50"></i> Exporter
                                     </a>
                                 </div>

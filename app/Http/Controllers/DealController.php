@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DealExport;
+use App\Exports\DealObjectifExport;
+use App\Exports\DealObjectifExportAll;
 use App\Models\Deal;
 use App\Models\Produit;
 use App\Models\Role;
@@ -10,6 +13,7 @@ use App\Models\Supervisor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DealController extends Controller
 {
@@ -184,5 +188,33 @@ class DealController extends Controller
         flash()->success('Deal supprimer avec succès');
 
         return back();
+    }
+
+    public function export() 
+    {
+        return Excel::download(new DealExport(), 'deals.xlsx');
+
+        // flash()->success('Fichier excel exporté avec succès');
+
+        // return back();
+    }
+
+    public function exportObj(Request $request) 
+    {
+        $user_id = $request->query('user_id');
+        return Excel::download(new DealObjectifExport($user_id), 'objectif_deal.xlsx');
+
+        // flash()->success('Fichier excel exporté avec succès');
+
+        // return back();
+    }
+
+    public function exportAll() 
+    {
+        return Excel::download(new DealObjectifExportAll(), 'objectif_deal_all.xlsx');
+
+        // flash()->success('Fichier excel exporté avec succès');
+
+        // return back();
     }
 }

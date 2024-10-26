@@ -131,7 +131,7 @@
             <div class="card shadow mb-4 w-100">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-primary">Traitement du chiffres d'affaire</h6>
-                    <a class="btn btn-primary btn-sm" href="{{route('deal.export')}}">
+                    <a class="btn btn-primary btn-sm" href="{{url('deal/object/export?user_id=' . $profile->id)}}">
                         <i class="fas fa-file-excel fa-sm text-white-50"></i> Exporter
                     </a>
                 </div>

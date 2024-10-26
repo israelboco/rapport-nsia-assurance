@@ -12,24 +12,15 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class DealObjectifExport implements FromCollection, WithHeadings
+class DealObjectifExportAll implements FromCollection, WithHeadings
 {
 
-    protected $user_id;
-
-    public function __construct($user_id)
-    {
-        $this->user_id = $user_id;
-    }
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
         $user_id = Auth::user()->id;
-        if($this->user_id){
-            $user_id = $this->user_id;
-        }
         $dealsObjectif = collect();
         $list_users = [];
 
@@ -45,14 +36,11 @@ class DealObjectifExport implements FromCollection, WithHeadings
         $objectif_nb_contrats_annee = $objectif_nb_contrats_jour * 5 * 4 * 12;
         $objectif_ca_annee = $objectif_ca_jour * 5 * 4 * 12;
 
-        $subordinates_id = Supervisor::where('supervisor_id', $user_id)->pluck('user_id')->toArray();
-
-        $list_users = array_merge([$user_id], $subordinates_id);
-
+        $list_users = User::all()->pluck('id')->toArray();
         foreach($list_users as $user_id){
             $user = User::find($user_id);
             if (!$user) continue;
-            
+
             $user_deal = [
                 'code_unique' => $user->code_unique,
                 'nom' => $user->nom,
@@ -148,6 +136,7 @@ class DealObjectifExport implements FromCollection, WithHeadings
             }else{
                 $user_deal['decission_annee'] = 'Attention';
             }
+
             $dealsObjectif->push($user_deal);
         }
 

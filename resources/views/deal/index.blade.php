@@ -106,8 +106,11 @@
 
     <!-- eTales Example -->
     <div class="card shadow mb-4">
-      <div class="card-header py-3">
+      <div class="card-header py-3 d-flex justify-content-between align-items-center">
         <h6 class="m-0 font-weight-bold text-primary">Deals</h6>
+        <a class="btn btn-primary btn-sm" href="{{route('deal.export')}}" id="exportButton">
+            <i class="fas fa-file-excel fa-sm text-white-50"></i> Exporter
+        </a>
       </div>
       <div class="card-body">
         <div class="table-responsive">

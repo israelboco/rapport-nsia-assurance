@@ -69,7 +69,8 @@ Route::middleware(['agent'])->group(function () {
         Route::put('deal/update/{deal}', 'update')->name('deal.update');
         Route::get('deal/delete/{deal}', 'destroy')->name('deal.delete'); //->middleware('access');
         Route::get('deals/export', 'export')->name('deal.export');
-        Route::get('deal/object/export', 'export')->name('deal_object.export');
+        Route::get('deal/object/export', 'exportObj')->name('deal_object.export');
+        Route::get('deal/object/export/all', 'exportAll')->name('deal_object_all.export');
     });
 
     Route::controller(ContratController::class)->group(function () {

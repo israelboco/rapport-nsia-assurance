@@ -18,6 +18,7 @@ class UsersImport implements ToModel
     */
     public function model(array $row)
     {
+        dd($row);
         $role = Role::where('nom', $row[8])->first();
         
         if (!$role || empty($row[6])) {

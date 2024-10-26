@@ -515,11 +515,12 @@ class UserController extends Controller
     }
 
     public function importAgent(Request $request){
+        dd($request);
 
         $validation = $request->validate([
             'fichier_excel' => 'required|file',
         ]);
-
+        dd($request);
         Excel::import(new UsersImport, $request->file('fichier_excel'));
 
         flash()->success('Fichier excel importé avec succès');
