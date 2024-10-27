@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('code_unique')->unique();
             $table->foreignId('role_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('telephone');
+            $table->string('telephone')->nullable();
             $table->string('profile')->default('profile/profile.png');
-            $table->string('domicile');
+            $table->string('domicile')->nullable();
             $table->string('ifu')->unique()->nullable();
             $table->boolean('is_blocked')->default(false);
             $table->boolean('is_admin')->default(false);

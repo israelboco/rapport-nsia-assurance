@@ -60,8 +60,8 @@ class UserController extends Controller
                                 $search = strtolower($search);
                                 return $query->where(DB::raw('lower(nom)'), 'like', "%$search%")
                                     ->orWhere(DB::raw('lower(prenom)'), 'like', "%$search%")
-                                    ->orWhere(DB::raw('lower(domicile)'), 'like', "%$search%");
-                                    // ->orWhere(DB::raw('lower(equipements)'), 'like', "%$search%");
+                                    ->orWhere(DB::raw('lower(domicile)'), 'like', "%$search%")
+                                    ->orWhere('code_unique', 'like', "%$search%");
                             });
                         })
                         ->orderByDesc('id')->paginate(10);
@@ -144,10 +144,10 @@ class UserController extends Controller
 
         $pourcental_deal = isset($total_deal) ? ($profile->deals()->count() / $total_deal) * 100 : 0;
 
-        $agent_sup_id = Supervisor::select('supervisor_id')->distinct()->pluck('supervisor_id');
-            $agent_sup = User::whereIn('id', $agent_sup_id)
+        $agent_sup_id = Supervisor::where('user_id', $profile->id)->distinct()->pluck('supervisor_id');
+            
+        $agent_sup = User::whereIn('id', $agent_sup_id)
                             ->where('remove', false)
-                            ->orwhere('role_id', '<=', $profile->role_id)
                             ->distinct()
                             ->get();
         return view('user.profile', compact('profile', 'user', 'chiffre_affaire', 'subordinates_count', 'pourcental_deal', 'deal_encours', 'agent_sup'));
@@ -515,12 +515,10 @@ class UserController extends Controller
     }
 
     public function importAgent(Request $request){
-        dd($request);
 
         $validation = $request->validate([
             'fichier_excel' => 'required|file',
         ]);
-        dd($request);
         Excel::import(new UsersImport, $request->file('fichier_excel'));
 
         flash()->success('Fichier excel importé avec succès');

@@ -58,7 +58,7 @@ Route::middleware(['agent'])->group(function () {
         Route::put('user/update/password/{user}', 'updatePassword')->name('user.update_password');
         Route::put('user/update/image/profile/{user}', 'updateProfile')->name('user.image_profile');
         Route::get('users/export', 'export')->name('user.export');
-        Route::post('user/agent/import', 'importAgent')->name('agent_info.import');
+        Route::post('user/agent/import', 'importAgent')->name('agent.import');
         Route::post('user/agent_sup/import', 'importAgentSup')->name('agent_sup.import');
 
     });

@@ -61,11 +61,11 @@ class HomeController extends Controller
                             ->whereYear('created_at', date('Y'))
                             ->whereMonth('created_at', $i)
                             ->sum('montant');
-            $ca = Contrat::whereYear('created_at', date('Y'))
-                            ->whereMonth('created_at', $i)
+            $ca_contrat = Contrat::whereYear('Date_Creation', date('Y'))
+                            ->whereMonth('Date_Creation', $i)
                             ->sum('solde');
             array_push($chiffre_affaire_annuel, $ca);
-            array_push($chiffre_affaire_contrat_annuel, $ca);
+            array_push($chiffre_affaire_contrat_annuel, $ca_contrat);
         }       
         return view('dashboard', compact(['user', 'productPercentages', 'chiffre_affaire', 'agent_count', 'deal_count', 'deal_encours', 'chiffre_affaire_annuel', 'chiffre_affaire_contrat_annuel']));
     }

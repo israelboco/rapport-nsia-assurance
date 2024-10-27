@@ -108,6 +108,7 @@
         </a>
     </li>
 
+    @if($user->is_admin)
     <!-- Divider -->
     <hr class="sidebar-divider">
 
@@ -127,6 +128,7 @@
             </div>
         </div>
     </li>
+    @endif
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

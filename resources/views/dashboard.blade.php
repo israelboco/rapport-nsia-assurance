@@ -170,7 +170,12 @@
                     <form class="user">
                         <div class="modal-body">
                         <div class="ml-auto">
-                            <form class="form-inline d-flex align-items-center" action="{{route('agent_info.import')}}" method="POST" enctype="multipart/form-data" id="importFormAgent">
+                            <form class="form-inline d-flex align-items-center" action="{{route('agent.import')}}" method="POST" enctype="multipart/form-data" id="importFormAgent">
+                                @csrf
+                            </form>
+                        </div>
+                        <div class="ml-auto">
+                            <form class="form-inline d-flex align-items-center" action="{{route('agent.import')}}" method="POST" enctype="multipart/form-data" id="importFormAgent">
                                 @csrf
                                 <div class="input-group mb-3">
                                     <label class="mr-2">Importer les agents</label>
@@ -179,7 +184,6 @@
                                         <button class="btn btn-primary btn-sm" type="submit">Importer</button>
                                     </div>
                                 </div>
-                                <!-- Loading Spinner -->
                                 <div id="loadingSpinnerAgent" style="display: none; margin-left: 10px; align-items: center; color: #007bff;">
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Chargement...
                                 </div>
@@ -244,6 +248,7 @@
     </div>
     <script>
         window.onload = function () {
+            // Initialisation de myAreaChart
             var ctx = document.getElementById('myAreaChart').getContext('2d');
             var myAreaChart = new Chart(ctx, {
                 type: 'line',
@@ -252,16 +257,16 @@
                     datasets: [
                         {
                             label: 'Chiffre d\'affaires annuel (Deal) XOF',
-                            data: {!! json_encode($chiffre_affaire_annuel) !!}, 
+                            data: {!! json_encode($chiffre_affaire_annuel) !!},
                             backgroundColor: 'rgba(78, 115, 223, 0.05)',
                             borderColor: 'rgba(78, 115, 223, 1)',
                             borderWidth: 2
                         },
                         {
                             label: 'Chiffre d\'affaires annuel (Contrat) XOF',
-                            data: {!! json_encode($chiffre_affaire_contrat_annuel) !!}, 
-                            backgroundColor: 'rgba(78, 115, 223, 0.05)',
-                            borderColor: 'rgba(78, 115, 223, 1)',
+                            data: {!! json_encode($chiffre_affaire_contrat_annuel) !!},
+                            backgroundColor: 'rgba(54, 185, 204, 0.05)',
+                            borderColor: 'rgba(54, 185, 204, 1)',
                             borderWidth: 2
                         }
                     ]
@@ -275,11 +280,12 @@
                 }
             });
 
-            var ctx = document.getElementById('myPieChart').getContext('2d');
+            // Initialisation de myPieChart
+            var pieCtx = document.getElementById('myPieChart').getContext('2d');
             var productLabels = {!! json_encode($productPercentages->pluck('name')) !!};
             var productData = {!! json_encode($productPercentages->pluck('percentage')) !!};
-            
-            var myPieChart = new Chart(ctx, {
+
+            var myPieChart = new Chart(pieCtx, {
                 type: 'pie',
                 data: {
                     labels: productLabels,
@@ -287,10 +293,11 @@
                         data: productData,
                         backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
                     }],
-                },
+                }
             });
         }
     </script>
+
 
  </div>
  <!-- /.container-fluid -->

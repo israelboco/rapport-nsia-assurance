@@ -18,7 +18,6 @@ class UsersImport implements ToModel
     */
     public function model(array $row)
     {
-        dd($row);
         $role = Role::where('nom', $row[8])->first();
         
         if (!$role || empty($row[6])) {
@@ -52,6 +51,14 @@ class UsersImport implements ToModel
         $user = User::where('code_unique', $row[0])->first();
 
         if(!$user){
+            $ifu = User::where('ifu', $row[7])->first();
+            $ifu = $ifu ? null : $row[7];
+            $compte_bancaire = User::where('compte_bancaire', $row[12])->first();
+            $compte_bancaire = $compte_bancaire ? null : $row[12];
+            $sex = $row[3];
+            if($row[3] != 'MASCULIN' && $row[3] != 'FEMININ'){
+                $sex = 'FEMININ';
+            }
             
             return new User([
                 'nom' => $row[1],
@@ -62,11 +69,11 @@ class UsersImport implements ToModel
                 'role_id' => $role->id,
                 'telephone' => $row[4],
                 'domicile' => $row[5],
-                'ifu' => $row[7],
-                'compte_bancaire' => $row[12],
+                'ifu' => $ifu,
+                'compte_bancaire' => $compte_bancaire,
                 'service_id' => $role->service_id,
-                'sexe' => $row[3],
-                'mode_reglement' => $row[10],
+                'sexe' => $sex,
+                'mode_reglement' => $row[10] ?? 'MOMO',
                 // 'date_naissance' => $row[0],
                 'lieu_naissance' => $row[5],
                 'fixe' => $row[13],
