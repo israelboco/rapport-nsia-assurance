@@ -75,6 +75,7 @@ Route::middleware(['agent'])->group(function () {
 
     Route::controller(ContratController::class)->group(function () {
         Route::get('contrat/index', 'index')->name('contrat.index'); 
+        Route::get('contrat/info_holding', 'info_holding')->name('contrat.info_holding'); 
         Route::get('contrat/detail/{contrat}', 'detail')->name('contrat.detail');
         Route::post('contrat/import', 'import')->name('contrat.import');
         Route::get('contrat/export', 'export')->name('contrat.export');

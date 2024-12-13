@@ -84,22 +84,22 @@
 
 
 
-    
-        <div class="d-flex align-items-center justify-content-between p-2">
-            <h6 class="mb-2 font-weight-bold text-primary">Liste Contrats</h6>
-            <a class="btn btn-primary btn-sm" href="{{route('contrat.export')}}" id="exportButton">
-                <i class="fas fa-file-excel fa-sm text-white-50"></i> Exporter
-            </a>
-            <div id="loadingSpinnerExport" style="display: none; margin-left: 10px; align-items: center; color: #007bff;">
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Chargement...
-            </div>
-        </div>
 
-        <!-- <script>
-            document.getElementById('exportButton').onclick = function() {
-                document.getElementById('loadingSpinnerExport').style.display = 'inline-flex';
-            };
-        </script> -->
+    <div class="d-flex align-items-center justify-content-between p-2">
+        <h6 class="mb-2 font-weight-bold text-primary">Liste Contrats</h6>
+        <a class="btn btn-primary btn-sm" href="{{route('contrat.export')}}" id="exportButton">
+            <i class="fas fa-file-excel fa-sm text-white-50"></i> Exporter
+        </a>
+        <div id="loadingSpinnerExport" style="display: none; margin-left: 10px; align-items: center; color: #007bff;">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Chargement...
+        </div>
+    </div>
+
+    <!-- <script>
+        document.getElementById('exportButton').onclick = function() {
+            document.getElementById('loadingSpinnerExport').style.display = 'inline-flex';
+        };
+    </script> -->
 
 
      

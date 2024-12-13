@@ -1,0 +1,14 @@
+.d-none {
+    display: none;
+}
+
+.toggle-btn {
+    margin-right: 30px;
+}
+
+.toggle-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+    transform: scale(1.1);
+}

@@ -58,9 +58,20 @@ class ContratController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function info_holding(Request $request)
     {
-        //
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $startDate = $request->input('startDate', now()->startOfWeek()->format('Y-m-d'));
+        $endDate = $request->input('endDate', now()->endOfWeek()->format('Y-m-d'));
+        // $data1 = Service::whereBetween('date', [$startDate, $endDate])->get();
+        $services = Service::all();
+        // $data2 = Prime::whereBetween('date_creation', [$startDate, $endDate])->get();
+        $data2 = ['',''];
+        $data3 = ['',''];
+        // $data3 = Encaissement::whereBetween('date_creation', [$startDate, $endDate])->get();
+
+        return view('contrat.info_holding', compact(['user', 'services', 'data2', 'data3', 'startDate', 'endDate']));
     }
 
     /**

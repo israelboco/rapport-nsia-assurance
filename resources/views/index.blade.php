@@ -14,6 +14,7 @@
   <title>Rapport NSIA Vie Assurance</title>
 
   <!-- Custom fonts for this template-->
+  <link href="{{asset('css/ca.css')}}" rel="stylesheet" type="text/css">
   <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
@@ -113,21 +114,30 @@
     <hr class="sidebar-divider">
 
     <!-- Heading -->
-    <div class="sidebar-heading">TRAITEMENT CA</div>
+    <div class="sidebar-heading">Traitement Chiffre d'affaires</div>
 
     <!-- Nav Item - Agents Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePagesCA" aria-expanded="true" aria-controls="collapsePagesCA">
-            <i class="fas fa-fw fa-user"></i>
-            <span>CA</span>
-        </a>
-        <div id="collapsePagesCA" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{route('contrat.index')}}">CA</a>
-                <!-- <a class="collapse-item" href="{{route('user.profile', $user->id)}}">Exporter</a> -->
-            </div>
-        </div>
-    </li>
+      <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseCA" aria-expanded="true" aria-controls="collapseCA">
+          <i class="fas fa-fw fa-file-contract"></i>
+          <span>Chiffre d'affaires</span>
+      </a>
+      <div id="collapseCA" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+              <!-- <h6 class="collapse-header">Menu CA :</h6> -->
+              <a class="collapse-item" href="{{route('contrat.index')}}">Contrats</a>
+              <a class="collapse-item" href="{{route('contrat.info_holding')}}">Info Holding</a>
+              <a class="collapse-item" href="{{route('contrat.index')}}">Prime Unique</a>
+              <a class="collapse-item" href="{{route('contrat.index')}}">CA Force de Vente</a>
+              <a class="collapse-item" href="{{route('contrat.index')}}">Nbrs Contact Force de Vente</a>
+              <a class="collapse-item" href="{{route('contrat.index')}}">Qualité</a>
+              <a class="collapse-item" href="{{route('contrat.index')}}">Impayés</a>
+              <a class="collapse-item" href="{{route('contrat.index')}}">Performance</a>
+              <a class="collapse-item" href="{{route('contrat.index')}}">Suivi Détaillés</a>
+              <a class="collapse-item" href="{{route('contrat.index')}}">Graphique</a>
+          </div>
+      </div>
+  </li>
     @endif
 
     <!-- Divider -->
@@ -287,6 +297,7 @@
   </div>
 
   <!-- Bootstrap core JavaScript-->
+  <script src="{{ asset('js/ca.js') }}"></script>
   <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
   <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
