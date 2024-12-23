@@ -56,7 +56,7 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Bienvenue !</h1>
                   </div>
-                  <form class="user"action="{{route('auth.check')}}" method="post">
+                  <form class="user" action="{{route('auth.check')}}" method="post">
                     @csrf
                     <div class="form-group">
                       <input type="text" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Entrer votre Code..." name="code_unique" required>
