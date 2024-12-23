@@ -124,17 +124,16 @@
       </a>
       <div id="collapseCA" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-              <!-- <h6 class="collapse-header">Menu CA :</h6> -->
-              <a class="collapse-item" href="{{route('contrat.index')}}">Contrats</a>
-              <a class="collapse-item" href="{{route('contrat.info_holding')}}">Info Holding</a>
-              <a class="collapse-item" href="{{route('contrat.index')}}">Prime Unique</a>
-              <a class="collapse-item" href="{{route('contrat.index')}}">CA Force de Vente</a>
-              <a class="collapse-item" href="{{route('contrat.index')}}">Nbrs Contact Force de Vente</a>
-              <a class="collapse-item" href="{{route('contrat.index')}}">Qualité</a>
-              <a class="collapse-item" href="{{route('contrat.index')}}">Impayés</a>
-              <a class="collapse-item" href="{{route('contrat.index')}}">Performance</a>
-              <a class="collapse-item" href="{{route('contrat.index')}}">Suivi Détaillés</a>
-              <a class="collapse-item" href="{{route('contrat.index')}}">Graphique</a>
+              <a class="collapse-item" href="{{route('contrat.index')}}" title="Listes de tout les Contrats">Contrats</a>
+              <a class="collapse-item" href="{{route('contrat.info_holding')}}" title="Info Holding - Analyse Financière">Info Holding</a>
+              <a class="collapse-item" href="{{route('contrat.prime_unique')}}" title="Prime Unique - Suivi des Commissions">Prime Unique</a>
+              <a class="collapse-item" href="{{route('contrat.cafv1')}}" title="CA FV1 - Gestion des Chefs CG et Fioles">CA FV1</a>
+              <a class="collapse-item" href="{{route('contrat.nbrs_contrat_fv')}}" title="Nbrs Contact FV1 - Affaires Nouvelles">Nbrs Contact FV1</a>
+              <a class="collapse-item" href="{{route('contrat.qualite')}}" title="Qualité - Suivi de la Performance par Service">Qualité</a>
+              <a class="collapse-item" href="{{route('contrat.impayes')}}" title="Impayés - Suivi par Service et Agent">Impayés</a>
+              <a class="collapse-item" href="{{route('contrat.performance')}}" title="Performance - Analyse Globale">Performance</a>
+              <a class="collapse-item" href="{{route('contrat.suivi_detaille')}}" title="Suivi Détaillés - Objectifs vs Réalisations">Suivi Dét.</a>
+              <a class="collapse-item" href="{{route('contrat.graphique')}}" title="Graphique">Graphique</a>
           </div>
       </div>
   </li>

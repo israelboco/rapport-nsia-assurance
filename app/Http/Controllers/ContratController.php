@@ -74,6 +74,144 @@ class ContratController extends Controller
         return view('contrat.info_holding', compact(['user', 'services', 'data2', 'data3', 'startDate', 'endDate']));
     }
 
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function prime_unique(Request $request)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $startDate = $request->input('startDate', now()->startOfWeek()->format('Y-m-d'));
+        $endDate = $request->input('endDate', now()->endOfWeek()->format('Y-m-d'));
+        // $data1 = Service::whereBetween('date', [$startDate, $endDate])->get();
+        $services = Service::all();
+        // $data2 = Prime::whereBetween('date_creation', [$startDate, $endDate])->get();
+        $data2 = ['',''];
+        $data3 = ['',''];
+        // $data3 = Encaissement::whereBetween('date_creation', [$startDate, $endDate])->get();
+
+        return view('contrat.prime_unique', compact(['user', 'services', 'data2', 'data3', 'startDate', 'endDate']));
+    }
+
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function cafv1(Request $request)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $startDate = $request->input('startDate', now()->startOfWeek()->format('Y-m-d'));
+        $endDate = $request->input('endDate', now()->endOfWeek()->format('Y-m-d'));
+        // $data1 = Service::whereBetween('date', [$startDate, $endDate])->get();
+        $services = Service::all();
+        // $data2 = Prime::whereBetween('date_creation', [$startDate, $endDate])->get();
+        $data2 = ['',''];
+        $data3 = ['',''];
+        // $data3 = Encaissement::whereBetween('date_creation', [$startDate, $endDate])->get();
+
+        return view('contrat.ca_fv1', compact(['user', 'services', 'data2', 'data3', 'startDate', 'endDate']));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function nbrs_contrat_fv(Request $request)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $startDate = $request->input('startDate', now()->startOfWeek()->format('Y-m-d'));
+        $endDate = $request->input('endDate', now()->endOfWeek()->format('Y-m-d'));
+        // $data1 = Service::whereBetween('date', [$startDate, $endDate])->get();
+        $services = Service::all();
+        // $data2 = Prime::whereBetween('date_creation', [$startDate, $endDate])->get();
+        $data2 = ['',''];
+        $data3 = ['',''];
+        // $data3 = Encaissement::whereBetween('date_creation', [$startDate, $endDate])->get();
+
+        return view('contrat.nbr_contrat_fv1', compact(['user', 'services', 'data2', 'data3', 'startDate', 'endDate']));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function qualite(Request $request)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $startDate = $request->input('startDate', now()->startOfWeek()->format('Y-m-d'));
+        $endDate = $request->input('endDate', now()->endOfWeek()->format('Y-m-d'));
+        // $data1 = Service::whereBetween('date', [$startDate, $endDate])->get();
+        $services = Service::all();
+        // $data2 = Prime::whereBetween('date_creation', [$startDate, $endDate])->get();
+        $data2 = ['',''];
+        $data3 = ['',''];
+        // $data3 = Encaissement::whereBetween('date_creation', [$startDate, $endDate])->get();
+
+        return view('contrat.qualite', compact(['user', 'services', 'data2', 'data3', 'startDate', 'endDate']));
+    }
+
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function impayes(Request $request)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $startDate = $request->input('startDate', now()->startOfWeek()->format('Y-m-d'));
+        $endDate = $request->input('endDate', now()->endOfWeek()->format('Y-m-d'));
+        // $data1 = Service::whereBetween('date', [$startDate, $endDate])->get();
+        $services = Service::all();
+        // $data2 = Prime::whereBetween('date_creation', [$startDate, $endDate])->get();
+        $data2 = ['',''];
+        $data3 = ['',''];
+        // $data3 = Encaissement::whereBetween('date_creation', [$startDate, $endDate])->get();
+
+        return view('contrat.impayes', compact(['user', 'services', 'data2', 'data3', 'startDate', 'endDate']));
+    }
+
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function performance(Request $request)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $startDate = $request->input('startDate', now()->startOfWeek()->format('Y-m-d'));
+        $endDate = $request->input('endDate', now()->endOfWeek()->format('Y-m-d'));
+        // $data1 = Service::whereBetween('date', [$startDate, $endDate])->get();
+        $services = Service::all();
+        // $data2 = Prime::whereBetween('date_creation', [$startDate, $endDate])->get();
+        $data2 = ['',''];
+        $data3 = ['',''];
+        // $data3 = Encaissement::whereBetween('date_creation', [$startDate, $endDate])->get();
+
+        return view('contrat.performance', compact(['user', 'services', 'data2', 'data3', 'startDate', 'endDate']));
+    }
+
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function suivi_detailles(Request $request)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $startDate = $request->input('startDate', now()->startOfWeek()->format('Y-m-d'));
+        $endDate = $request->input('endDate', now()->endOfWeek()->format('Y-m-d'));
+        // $data1 = Service::whereBetween('date', [$startDate, $endDate])->get();
+        $services = Service::all();
+        // $data2 = Prime::whereBetween('date_creation', [$startDate, $endDate])->get();
+        $data2 = ['',''];
+        $data3 = ['',''];
+        // $data3 = Encaissement::whereBetween('date_creation', [$startDate, $endDate])->get();
+
+        return view('contrat.suivi_detailles', compact(['user', 'services', 'data2', 'data3', 'startDate', 'endDate']));
+    }
+
     /**
      * Store a newly created resource in storage.
      */

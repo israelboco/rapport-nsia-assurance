@@ -76,8 +76,19 @@ Route::middleware(['agent'])->group(function () {
     Route::controller(ContratController::class)->group(function () {
         Route::get('contrat/index', 'index')->name('contrat.index'); 
         Route::get('contrat/info_holding', 'info_holding')->name('contrat.info_holding'); 
+        Route::get('contrat/prime_unique', 'prime_unique')->name('contrat.prime_unique'); 
         Route::get('contrat/detail/{contrat}', 'detail')->name('contrat.detail');
         Route::post('contrat/import', 'import')->name('contrat.import');
         Route::get('contrat/export', 'export')->name('contrat.export');
+
+        Route::get('contrat/performance', 'performance')->name('contrat.performance'); 
+        Route::get('contrat/cafv1', 'cafv1')->name('contrat.cafv1'); 
+        Route::get('contrat/nbrs_contrat_fv', 'nbrs_contrat_fv')->name('contrat.nbrs_contrat_fv'); 
+        Route::get('contrat/qualite', 'qualite')->name('contrat.qualite'); 
+        Route::get('contrat/impayes', 'impayes')->name('contrat.impayes'); 
+        Route::get('contrat/suivi_detaille', 'suivi_detailles')->name('contrat.suivi_detaille'); 
+        Route::get('contrat/graphique', 'graphique')->name('contrat.graphique'); 
+        
     });
+
 });
